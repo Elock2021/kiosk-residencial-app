@@ -13,6 +13,7 @@ export default defineConfig(({ mode }) => {
   processEnv.NODE_ENV = mode;
 
   return {
+    base: "/kiosk-residencial-app/",
     plugins: [react(), svgr()],
     resolve: {
       alias: {

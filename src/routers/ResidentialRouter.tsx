@@ -35,6 +35,7 @@ export default function ResidentialRouter() {
   }, []);
   return (
     <BrowserRouter
+      basename="/kiosk-residencial-app/"
       future={{ v7_startTransition: true, v7_relativeSplatPath: true }}
     >
       <NavigationContext>
