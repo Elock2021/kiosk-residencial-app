@@ -31,7 +31,7 @@ import NavigationContext from "./NavigationContext";
 export default function ResidentialRouter() {
   const { session } = useSelector((state: any) => ({ session: state.session }));
   useEffect(() => {
-    import("../modules/Residential/styles/_global_residential.scss");
+    import("../modules/Residential/styles/global_residential.scss");
   }, []);
   return (
     <BrowserRouter

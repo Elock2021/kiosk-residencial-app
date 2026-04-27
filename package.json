@@ -37,12 +37,13 @@
   "scripts": {
     "start": "vite",
     "build": "vite build",
+    "postbuild": "node scripts/write-deploy-meta.cjs",
     "build:sta": "env-cmd -f .env.staging vite build",
     "build:panama": "env-cmd -f .env.panama vite build",
     "dev": "vite",
     "preview": "vite preview",
     "predeploy": "npm run build",
-    "deploy": "gh-pages -d build"
+    "deploy": "gh-pages -d build --dotfiles"
   },
   "resolutions": {
     "autoprefixer": "10.4.5"
