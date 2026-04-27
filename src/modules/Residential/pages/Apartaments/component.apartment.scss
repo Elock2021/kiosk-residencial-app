@@ -1,0 +1,54 @@
+.apartment {
+    /* width */
+    &::-webkit-scrollbar {
+        width: 50px;
+    }
+
+    /* Track */
+    &::-webkit-scrollbar-track {
+        background: #f1f1f1;
+    }
+
+    /* Handle */
+    &::-webkit-scrollbar-thumb {
+        background: #c6c6c6;
+        border: solid;
+    }
+
+    /* Handle on hover */
+    &::-webkit-scrollbar-thumb:hover {
+        background: #000;
+    }
+
+    &::-webkit-scrollbar-button:single-button {
+        background-color: #bbbbbb;
+        display: block;
+        border-style: solid;
+        height: 50px;
+        width: 100%;
+    }
+
+    &::-webkit-scrollbar-button:single-button:vertical:decrement {
+        background-color: #bbbbbb;
+        display: block;
+        border-style: solid;
+        height: 50px;
+        width: 100%;
+        background-image: url("./arrow_up.png");
+        background-size: 30px 30px;
+        background-repeat: no-repeat;
+        background-position: center;
+    }
+
+    &::-webkit-scrollbar-button:single-button:vertical:increment {
+        background-color: #bbbbbb;
+        display: block;
+        border-style: solid;
+        height: 50px;
+        width: 100%;
+        background-image: url("./arrow_down.png");
+        background-size: 30px 30px;
+        background-repeat: no-repeat;
+        background-position: center;
+    }
+}

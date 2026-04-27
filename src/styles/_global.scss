@@ -1,0 +1,136 @@
+/* eslint no-use-before-define: 0 */
+@use "helpers";
+@use "components";
+
+@font-face {
+  font-family: Poppins;
+  src: url("../assets/fonts/Poppins-Thin.ttf");
+}
+
+@font-face {
+  font-family: Poppins;
+  src: url("../assets/fonts/Poppins-Bold.ttf");
+  font-weight: bold;
+}
+
+@font-face {
+  font-family: Poppins;
+  src: url("../assets/fonts/Poppins-SemiBold.ttf");
+  font-weight: bolder;
+}
+
+@font-face {
+  font-family: Poppins;
+  src: url("../assets/fonts/Poppins-ExtraLight.ttf");
+  font-weight: 300;
+}
+
+@font-face {
+  font-family: Poppins;
+  src: url("../assets/fonts/Poppins-Light.ttf");
+  font-weight: 400;
+}
+
+@font-face {
+  font-family: Poppins;
+  src: url("../assets/fonts/Poppins-Medium.ttf");
+  font-weight: 500;
+}
+
+@font-face {
+  font-family: Poppins;
+  src: url("../assets/fonts/Poppins-Regular.ttf");
+  font-weight: 600;
+}
+
+* {
+  padding: 0;
+  margin: 0;
+  box-sizing: border-box;
+  font-family: Poppins;
+}
+
+#root {
+  height: 100%;
+  overflow-y: hidden;
+}
+
+.color-black {
+  color: #000;
+}
+
+.color-blue {
+  color: #0060e8;
+}
+
+.background-color-base {
+  background-color: #f0f6f6;
+}
+
+.background-color-gris {
+  background-color: #fafbfd;
+}
+
+.background-color-white {
+  background-color: #fff;
+}
+
+.root-version {
+  position: absolute;
+  bottom: 0;
+  right: 0;
+  padding: 5px;
+  font-size: 8px;
+  color: #fff;
+}
+
+.scrollbar {
+  &::-webkit-scrollbar {
+    width: 50px;
+  }
+
+  &::-webkit-scrollbar-track {
+    background: #f1f1f1;
+  }
+
+  &::-webkit-scrollbar-thumb {
+    background: #c6c6c6;
+    border: solid;
+  }
+
+  &::-webkit-scrollbar-thumb:hover {
+    background: #000;
+  }
+
+  &::-webkit-scrollbar-button:single-button {
+    background-color: #bbbbbb;
+    display: block;
+    border-style: solid;
+    height: 50px;
+    width: 100%;
+  }
+
+  &::-webkit-scrollbar-button:single-button:vertical:decrement {
+    background-color: #bbbbbb;
+    display: block;
+    border-style: solid;
+    height: 50px;
+    width: 100%;
+    background-image: url("../assets/png/arrow_up.png");
+    background-size: 30px 30px;
+    background-repeat: no-repeat;
+    background-position: center;
+  }
+
+  &::-webkit-scrollbar-button:single-button:vertical:increment {
+    background-color: #bbbbbb;
+    display: block;
+    border-style: solid;
+    height: 50px;
+    width: 100%;
+    background-image: url("../assets/png/arrow_down.png");
+    background-size: 30px 30px;
+    background-repeat: no-repeat;
+    background-position: center;
+  }
+}

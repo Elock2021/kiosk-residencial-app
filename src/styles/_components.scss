@@ -1,0 +1,30 @@
+.square {
+    position: relative;
+    .square-input {
+        width: 70px;
+        height: 70px;
+        border-radius: 7px;
+        border-top: 1px solid rgb(211, 211, 211);
+        border-right: 1px solid rgb(211, 211, 211);
+        border-bottom: none;
+        border-left: none;
+        text-align: center;
+        font-size: 3em;
+        &.selected {
+            border: 2px solid rgba(150, 98, 0, 0.652);
+        }
+
+        &:disabled {
+            background-color: #fff;
+        }
+    }
+
+    .square-block {
+        width: 100px;
+        height: 100px;
+        background-color: transparent;
+        position: absolute;
+        left: 0;
+        top: 0;
+    }
+}

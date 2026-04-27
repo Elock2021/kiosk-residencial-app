@@ -1,0 +1,17 @@
+.drawer-comp {
+    position: absolute;
+    width: 100%;
+    height: 100vh;
+    background-color: #00000097;
+    top: 0;
+    left: 0;
+    z-index: 1000;
+    transition: transform 0.3s ease-in-out;
+}
+
+.drawer-comp.drawer-comp-open {
+    transform: translateX(0);
+}
+.drawer-comp.drawer-comp-close {
+    transform: translateX(-100%);
+}

@@ -1,0 +1,24 @@
+.sign-in-component {
+  position: fixed;
+  top: 0;
+  right: 0;
+  height: 100vh;
+  width: 100%;
+  transition: 0.2s ease;
+  z-index: 1000;
+  display: flex;
+  justify-content: flex-end;
+  background-color: var(--res-overlay, rgba(0, 0, 0, 0.298));
+
+  .keyboard-master-key {
+    .hg-button {
+      min-height: 58px;
+    }
+  }
+
+  &__form {
+    background: var(--res-surface, #fff);
+    color: var(--res-text, #000);
+    border-left: 1px solid var(--res-border, transparent);
+  }
+}

@@ -1,0 +1,26 @@
+.component-header {
+  min-height: 88px;
+  display: flex;
+  align-items: center;
+  color: var(--res-text);
+}
+
+.component-header__content {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.component-header__brand {
+  width: 120px;
+}
+
+.component-header__brand-button {
+  border-radius: 10px;
+}
+
+.component-header__brand-button:focus-visible {
+  outline: none;
+  box-shadow: var(--res-focus);
+}
