@@ -14,7 +14,7 @@ export const TableHeader = [
     flexGrow: 1,
   },
   {
-    label: "Cantidad Cajas",
+    label: "Cantidad Puertas",
     key: "quantity_box",
     align: "center",
     alignFlex: "center",
