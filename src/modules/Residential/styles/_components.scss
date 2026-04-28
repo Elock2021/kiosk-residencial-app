@@ -6228,6 +6228,92 @@ button:focus-visible {
   color: #cde7ff;
 }
 
+.res-custody-openbox-shell {
+  width: min(92vw, 1320px);
+  margin: 0 auto;
+  border-radius: 32px;
+  border: 1px solid color-mix(in srgb, var(--res-border) 82%, transparent);
+  background:
+    radial-gradient(42% 36% at 20% 18%, rgba(248, 233, 150, 0.16) 0%, rgba(248, 233, 150, 0) 72%),
+    radial-gradient(42% 36% at 84% 20%, rgba(108, 201, 188, 0.16) 0%, rgba(108, 201, 188, 0) 74%),
+    color-mix(in srgb, var(--res-surface-elevated) 86%, transparent);
+  box-shadow: 0 22px 44px rgba(0, 0, 0, 0.12);
+}
+
+.res-custody-openbox-title {
+  color: var(--res-text);
+}
+
+.res-custody-openbox-list {
+  gap: 10px;
+}
+
+.res-custody-box-card {
+  width: min(760px, 88%);
+  min-height: 132px;
+  border-radius: 16px;
+  border: 1px solid color-mix(in srgb, var(--res-border-strong) 74%, transparent);
+  background: color-mix(in srgb, var(--res-surface-contrast) 70%, transparent);
+  cursor: pointer;
+  transition: transform 0.12s ease, background-color 0.12s ease, box-shadow 0.12s ease;
+}
+
+.res-custody-box-card:hover {
+  transform: translateY(-1px);
+  background: color-mix(in srgb, var(--res-surface-contrast) 76%, transparent);
+  box-shadow: 0 12px 24px rgba(0, 0, 0, 0.12);
+}
+
+.res-custody-box-card__icon-wrap {
+  width: 110px;
+}
+
+.res-custody-box-card__content {
+  color: var(--res-text);
+}
+
+.res-custody-box-card__content .bold {
+  font-size: 2.1rem;
+  line-height: 1.02;
+}
+
+.res-custody-box-card__content .size-08 {
+  font-size: 1.28rem;
+  color: color-mix(in srgb, var(--res-text) 72%, var(--res-muted));
+}
+
+.res-custody-openbox-empty {
+  width: min(760px, 88%);
+  min-height: 132px;
+  border-radius: 16px;
+  border: 1px solid color-mix(in srgb, var(--res-border-strong) 74%, transparent);
+  background: color-mix(in srgb, var(--res-surface-contrast) 70%, transparent);
+}
+
+.res-custody-openbox-empty__icon-wrap {
+  width: 110px;
+}
+
+[data-theme="dark"] .res-custody-openbox-shell {
+  border-color: color-mix(in srgb, #4e6488 62%, transparent);
+  background:
+    radial-gradient(40% 32% at 18% 16%, rgba(255, 226, 97, 0.1) 0%, rgba(255, 226, 97, 0) 70%),
+    radial-gradient(40% 36% at 86% 18%, rgba(72, 191, 175, 0.12) 0%, rgba(72, 191, 175, 0) 74%),
+    color-mix(in srgb, #101a2d 88%, transparent);
+  box-shadow: 0 24px 44px rgba(0, 0, 0, 0.36);
+}
+
+[data-theme="dark"] .res-custody-box-card,
+[data-theme="dark"] .res-custody-openbox-empty {
+  border-color: color-mix(in srgb, #4d658f 62%, transparent);
+  background: color-mix(in srgb, #182742 82%, transparent);
+}
+
+[data-theme="dark"] .res-custody-box-card__content,
+[data-theme="dark"] .res-custody-openbox-empty .text-white {
+  color: #e8f0ff !important;
+}
+
 .res-custody-stage {
   width: 100%;
 }

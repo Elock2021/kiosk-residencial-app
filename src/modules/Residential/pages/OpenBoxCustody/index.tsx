@@ -10,12 +10,12 @@ import { useNavigate, useParams } from "react-router-dom";
 import OrderService from "../../../../services/order.service";
 import { set_order } from "../../../../redux/actions/order";
 import DoorLockerService from "../../../../services/door_locker.service";
-import BoxComponent from "./Box";
-import Circle from "../../../../assets/svg/circle.svg?react";
-import BoxImg from "../../../../assets/svg/yellow_box.svg?react";
+import BoxComponent from "../OpenBox/Box";
 
 const OpenBoxCustody = () => {
   const [boxes, setBoxes] = useState<any>([]);
+  const [selectedBox, setSelectedBox] = useState<any>(null);
+  const [isSelectionModalOpen, setIsSelectionModalOpen] = useState(false);
   const { session, order, loader } = useSelector((state: any) => ({ session: state.session, order: state.order, loader: state.loader }));
 
   const navigate = useNavigate();
@@ -127,82 +127,59 @@ const OpenBoxCustody = () => {
     }
   };
 
+  const getBoxLabel = (box: any) => {
+    if (box?.box_type_id === 1) return "pequeño";
+    if (box?.box_type_id === 2) return "mediano";
+    if (box?.box_type_id === 3) return "grande";
+    return String(box?.name || "seleccionado");
+  };
+
+  const _handleRequestBoxSelection = (box: any) => {
+    setSelectedBox(box);
+    setIsSelectionModalOpen(true);
+  };
+
+  const _handleCancelSelection = () => {
+    setIsSelectionModalOpen(false);
+    setSelectedBox(null);
+  };
+
+  const _handleConfirmSelection = async () => {
+    if (!selectedBox) return;
+    const boxToOpen = selectedBox;
+    setIsSelectionModalOpen(false);
+    setSelectedBox(null);
+    await _handleOnclickBox(boxToOpen);
+  };
+
   return (
-    <div className="container-fluid h-100 ">
+    <div className="container-fluid h-100 res-page">
       <Header />
+      <div className="res-content d-flex align-items-start justify-content-center mt-2">
+        <div className="res-flow res-openbox-flow res-size-step">
+          <p className="res-size-step__subtitle">
+            Selecciona el espacio ideal según el tamaño de lo que deseas guardar.
+          </p>
 
-      <div
-        className="d-flex align-items-center justify-content-center mt-5"
-        style={{ height: "600px" }}
-      >
-        <div
-          className="h-100 d-flex align-items-center justify-content-around flex-column p-3"
-          style={{
-            background: "rgba(255, 255, 255, 0.1)",
-            width: "80%",
-            borderRadius: "30px",
-          }}
-        >
-          <div className="texte-center bold size-15">
-            Selecciona el tamaño de caja que necesitas
-          </div>
-          <div className="w-100 d-flex flex-column align-items-center">
-            {boxes.length === 0 && (
-              <div
-                className="my-2 d-flex align-items-center justify-content-start px-4 text-black"
-                style={{
-                  backgroundColor: "rgba(255, 255, 255, 0.2)",
-                  width: "50%",
-                  height: "126px",
-                  borderRadius: "10px",
-                }}
-              >
-                <div
-                  className="d-flex justify-content-center align-items-center position-relative"
-                  style={{ width: "100px" }}
-                >
-                  <Circle
-                    style={{
-                      position: "absolute",
-                      width: "100px",
-                      height: "100px",
-                    }}
-                  />
-                  <BoxImg
-                    style={{
-                      position: "absolute",
-                      width: "70px",
-                      height: "70px",
-                    }}
-                  />
-                </div>
-                <div className="ms-4 text-white">
-                  <div className="bold d-flex flex-column">
-                    {loader.is_loading ? (
-                      <span>Cargando cajas...</span>
-                    ) : (
-                      <>
-                        <span>No hay cajas disponibles</span>
-                        <span>Por favor deje el paquete en consejeria</span>
-                      </>
-                    )}
-                  </div>
-                  <div className="d-flex flex-column size-08"></div>
-                </div>
-              </div>
-            )}
+          {loader.is_loading ? (
+            <div className="res-state-message">Cargando cajas...</div>
+          ) : boxes.length > 0 ? (
+            <div className="res-size-step__cards">
+              {boxes.map((box: any) => (
+                <BoxComponent key={box.box_type_id} box={box} _handleOnclickBox={_handleRequestBoxSelection} />
+              ))}
+            </div>
+          ) : (
+            <div className="res-size-step__empty res-state-message">
+              <span className="d-block">No hay cajas disponibles</span>
+              <span className="d-block">Por favor deje el paquete en conserjería</span>
+            </div>
+          )}
 
-            {boxes.map((box: any, index: number) => (
-              <BoxComponent
-                key={index}
-                box={box}
-                _handleOnclickBox={_handleOnclickBox}
-              />
-            ))}
-          </div>
-          <div className="w-100 text-center">
+          <div className="w-100 text-center mt-4">
             <button
-              className="px-4 py-2 main-button bold"
+              type="button"
+              className="res-help-back-button"
               onClick={() =>
                 navigate(`/info-custody?phone=${params.phone}`, {
                   replace: true,
@@ -214,6 +191,28 @@ const OpenBoxCustody = () => {
           </div>
         </div>
       </div>
+
+      {isSelectionModalOpen && (
+        <div className="res-modal-overlay" onClick={_handleCancelSelection}>
+          <div className="res-modal res-box-selection-modal" onClick={(e) => e.stopPropagation()}>
+            <h4 className="res-box-selection-modal__title">
+              ¿Está seguro que quiere seleccionar el casillero {getBoxLabel(selectedBox)}?
+            </h4>
+            <p className="res-box-selection-modal__text">
+              Si tu paquete no cabe, en la siguiente pantalla toca{" "}
+              <strong>“No me sirve el casillero”</strong>.
+            </p>
+            <div className="res-box-selection-modal__actions">
+              <button type="button" className="res-help-back-button" onClick={_handleCancelSelection}>
+                Cancelar
+              </button>
+              <button type="button" className="main-button-yellow" onClick={_handleConfirmSelection}>
+                Sí, seleccionar
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
     </div>
   );
 };

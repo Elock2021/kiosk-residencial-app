@@ -23,23 +23,16 @@ const BoxComponent = ({ _handleOnclickBox, box }: any) => {
     }, []);
     return (
       <div
-        className="my-2 d-flex align-items-center justify-content-start px-4 text-black"
-        style={{
-          backgroundColor: "rgba(255, 255, 255, 0.2)",
-          width: "50%",
-          height: "126px",
-          borderRadius: "10px",
-        }}
+        className="my-2 d-flex align-items-center justify-content-start px-4 text-black res-custody-box-card"
         onClick={() => _handleOnclickBox(box)}
       >
         <div
-          className="d-flex justify-content-center align-items-center position-relative"
-          style={{width: '100px'}}
+          className="d-flex justify-content-center align-items-center position-relative res-custody-box-card__icon-wrap"
         >
           <Circle style={{position: 'absolute', width: '100px', height: '100px'}}/>
           <Box style={{position: 'absolute', width: size, height: size}}/>
         </div>
-        <div className="ms-4 text-white">
+        <div className="ms-4 text-white res-custody-box-card__content">
           <div className="bold">Abrir caja {box.name?.toLowerCase()}</div>
           <div className="d-flex flex-column size-08">
             <div className="me-3">Altura: {box.height / 10} cm</div>
