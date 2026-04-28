@@ -1480,7 +1480,7 @@ button:focus-visible {
 }
 
 .res-home-v5-action--pickup {
-  border-radius: 16px;
+  border-radius: 40px;
   border: none;
   background:
     radial-gradient(
@@ -1544,7 +1544,7 @@ button:focus-visible {
 }
 
 .res-home-v5-action--custody {
-  border-radius: 16px;
+  border-radius: 40px;
   border: none;
   background: color-mix(in srgb, var(--res-surface-contrast) 60%, transparent);
   min-height: 0;
@@ -4100,9 +4100,9 @@ button:focus-visible {
 }
 
 .res-help-back-button {
-  min-width: 210px;
+  min-width: 180px;
   min-height: 56px;
-  padding: 0 22px;
+  padding: 0 0px;
   border-radius: 999px;
   border: 1px solid color-mix(in srgb, var(--res-accent-cyan) 48%, var(--res-border));
   background: linear-gradient(
@@ -4111,7 +4111,7 @@ button:focus-visible {
     color-mix(in srgb, var(--res-accent-cyan) 14%, transparent)
   );
   color: color-mix(in srgb, var(--res-text) 90%, var(--res-muted));
-  font-size: 1.05rem;
+  font-size: 1.25rem;
   font-weight: 700;
   letter-spacing: 0.01em;
   box-shadow: 0 0 0 1px color-mix(in srgb, var(--res-accent-cyan) 28%, transparent),
@@ -5237,7 +5237,7 @@ button:focus-visible {
 
 .res-pickup-qr-title {
   margin: 52px 0 0;
-  font-size: clamp(2.2rem, 2rem + 0.8vw, 3rem);
+  font-size: clamp(2rem, 1.85rem + 0.65vw, 2.6rem);
   line-height: 1.05;
   font-weight: 800;
   color: var(--res-text);
@@ -5251,7 +5251,7 @@ button:focus-visible {
 }
 
 .res-pickup-qr-frame {
-  width: min(400px, 76vw);
+  width: min(360px, 70vw);
   aspect-ratio: 1 / 1;
   margin-top: 45px;
   border-radius: 28px;
@@ -5321,6 +5321,17 @@ button:focus-visible {
 .res-pickup-manual-trigger svg {
   width: 30px;
   height: 28px;
+}
+
+.res-pickup-qr-panel .res-keypad-back-button {
+ border: 1px solid color-mix(in srgb, var(--res-accent-cyan) 48%, var(--res-border));
+  background: linear-gradient(
+    135deg,
+    color-mix(in srgb, var(--res-surface-elevated) 76%, transparent),
+    color-mix(in srgb, var(--res-accent-cyan) 14%, transparent)
+  );
+  color: color-mix(in srgb, var(--res-text) 90%, var(--res-muted));
+  
 }
 
 .res-pickup-manual-wrap {
@@ -5423,22 +5434,29 @@ button:focus-visible {
 
 .res-botonera-letters-row:nth-child(1),
 .res-botonera-letters-row:nth-child(2) {
-  grid-template-columns: repeat(10, minmax(0, 1fr));
+  grid-template-columns: repeat(10, minmax(74px, 1fr));
 }
 
 .res-botonera-letters-row:nth-child(3) {
-  grid-template-columns: repeat(7, minmax(0, 1fr));
-  width: 70%;
-  margin: 0 auto;
+  grid-template-columns: repeat(10, minmax(74px, 1fr));
 }
 
 .res-botonera-letters-row .res-botonera-key {
-  min-height: 56px;
-  font-size: 1.2rem;
+  min-height: 72px;
+  font-size: 1.3rem;
+  border-radius: 18px;
+}
+
+.res-botonera-key--letters-action {
+  min-height: 72px;
+}
+
+.res-botonera-key--letters-delete {
+  grid-column: span 2;
 }
 
 .res-pickup-manual-modal .res-botonera-actions {
-  margin-top: 10px;
+  margin-top: 22px;
 }
 
 .res-code-grid {
@@ -5849,4 +5867,70 @@ button:focus-visible {
     left: 0;
     bottom: 64px;
   }
+}
+
+.res-custody-shell {
+  width: min(92%, 1360px);
+  height: 650px;
+  border-radius: 34px;
+  border: 1px solid color-mix(in srgb, var(--res-border) 82%, transparent);
+  background:
+    radial-gradient(42% 36% at 20% 18%, rgba(248, 233, 150, 0.18) 0%, rgba(248, 233, 150, 0) 72%),
+    radial-gradient(42% 36% at 84% 20%, rgba(108, 201, 188, 0.18) 0%, rgba(108, 201, 188, 0) 74%),
+    color-mix(in srgb, var(--res-surface-elevated) 86%, transparent);
+  box-shadow: 0 20px 40px rgba(0, 0, 0, 0.12);
+}
+
+.res-custody-title {
+  font-size: clamp(2.1rem, 1.9rem + 0.8vw, 3rem);
+  line-height: 1.08;
+  color: var(--res-text);
+}
+
+.res-custody-readout {
+  background: color-mix(in srgb, var(--res-surface-contrast) 66%, transparent);
+  border: 2px solid color-mix(in srgb, var(--res-accent) 58%, transparent);
+  border-radius: 20px;
+  min-width: 380px;
+  min-height: 98px;
+  padding: 8px 16px;
+}
+
+.res-custody-readout__prefix {
+  font-size: 2.3rem;
+  color: color-mix(in srgb, var(--res-text) 58%, #fff 42%);
+}
+
+.res-custody-readout__digit {
+  font-size: 2.3rem;
+  border-bottom: 4px solid color-mix(in srgb, var(--res-text) 16%, #fff 84%);
+  color: var(--res-text);
+}
+
+.res-custody-keyboard {
+  color: var(--res-text);
+  height: 65vh;
+}
+
+[data-theme="dark"] .res-custody-shell {
+  border-color: color-mix(in srgb, #4e6488 62%, transparent);
+  background:
+    radial-gradient(40% 32% at 18% 16%, rgba(255, 226, 97, 0.1) 0%, rgba(255, 226, 97, 0) 70%),
+    radial-gradient(40% 36% at 86% 18%, rgba(72, 191, 175, 0.12) 0%, rgba(72, 191, 175, 0) 74%),
+    color-mix(in srgb, #101a2d 88%, transparent);
+  box-shadow: 0 24px 44px rgba(0, 0, 0, 0.36);
+}
+
+[data-theme="dark"] .res-custody-readout {
+  background: color-mix(in srgb, #15253c 84%, transparent);
+  border-color: color-mix(in srgb, #f3cb3e 70%, transparent);
+}
+
+[data-theme="dark"] .res-custody-readout__prefix {
+  color: color-mix(in srgb, #d9e5fb 82%, #fff 18%);
+}
+
+[data-theme="dark"] .res-custody-readout__digit {
+  color: #e9f1ff;
+  border-bottom-color: color-mix(in srgb, #d7e5ff 72%, transparent);
 }

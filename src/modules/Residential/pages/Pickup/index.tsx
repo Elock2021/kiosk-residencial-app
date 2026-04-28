@@ -9,7 +9,6 @@ import { useDispatch } from "react-redux";
 import { set_loader } from "../../../../redux/actions/loader";
 import { set_pickup } from "../../../../redux/actions/pickup";
 import { LuQrCode } from "react-icons/lu";
-import { LuHome } from "react-icons/lu";
 import { LuKeyboard } from "react-icons/lu";
 
 const NUMBER_KEYS = ["1", "2", "3", "4", "5", "6", "7", "8", "9"];
@@ -116,11 +115,6 @@ const Pickup = () => {
     setQrcode((prev) => prev.slice(0, -1));
   };
 
-  const _clearField = () => {
-    setQrcode("");
-    if (inputRef.current) inputRef.current.value = "";
-  };
-
   const activeKeys =
     manualMode === "numbers" ? NUMBER_KEYS : LETTER_KEYS;
 
@@ -137,12 +131,6 @@ const Pickup = () => {
       <div className="w-100 my-4 ps-4 text-start">
         <Logo style={{ width: "100px" }} />
       </div>
-      <div className="res-pickup-top-actions">
-        <button className="main-button res-pickup-home-button" onClick={() => navigate("/")}>
-          <span>Volver</span>
-          <LuHome />
-        </button>
-      </div>
       <div className="res-content d-flex justify-content-center align-items-center p-0">
         <div className="res-pickup-qr-panel d-flex align-items-center justify-content-center flex-column">
           <h1 className="res-pickup-qr-title">Escanea tu QR para retirar</h1>
@@ -155,6 +143,9 @@ const Pickup = () => {
           >
             <LuKeyboard />
             Digitar manualmente
+          </button>
+          <button className="res-keypad-back-button mt-3" onClick={() => navigate("/")}>
+            Volver
           </button>
         </div>
       </div>
@@ -197,6 +188,15 @@ const Pickup = () => {
                 <div className="res-botonera-letters-rows">
                   {LETTER_ROWS.map((row, rowIndex) => (
                     <div className="res-botonera-letters-row" key={`letters-row-${rowIndex}`}>
+                      {rowIndex === 2 && (
+                        <button
+                          type="button"
+                          className="res-botonera-key res-botonera-key--dark res-botonera-key--letters-action res-botonera-key--letters-delete"
+                          onClick={_deleteLastCharacter}
+                        >
+                          Borrar
+                        </button>
+                      )}
                       {row.map((key) => (
                         <button
                           key={`${manualMode}-${key}`}
@@ -207,6 +207,16 @@ const Pickup = () => {
                           {key}
                         </button>
                       ))}
+                      {rowIndex === 2 && (
+                        <button
+                          type="button"
+                          className="res-botonera-key res-botonera-key--accent res-botonera-key--letters-action"
+                          onClick={() => qrcode.length === 6 && _handleValidateCode(qrcode)}
+                          disabled={qrcode.length !== 6}
+                        >
+                          OK
+                        </button>
+                      )}
                     </div>
                   ))}
                 </div>
@@ -242,21 +252,7 @@ const Pickup = () => {
                     OK
                   </button>
                 </div>
-              ) : (
-                <div className="res-botonera-actions res-botonera-actions--two-cols">
-                  <button type="button" className="res-botonera-key res-botonera-key--dark" onClick={_deleteLastCharacter}>
-                    Borrar
-                  </button>
-                  <button
-                    type="button"
-                    className="res-botonera-key res-botonera-key--accent"
-                    onClick={() => qrcode.length === 6 && _handleValidateCode(qrcode)}
-                    disabled={qrcode.length !== 6}
-                  >
-                    OK
-                  </button>
-                </div>
-              )}
+              ) : null}
             </div>
           </div>
         </div>
