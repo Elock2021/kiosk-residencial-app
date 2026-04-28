@@ -23,7 +23,7 @@ const OrderDetails = (props: any) => {
             </div>
           </div>
           <div className="col-6 mt-3">
-            <div className="size-09">Cajas</div>
+            <div className="size-09">Puertas</div>
             <div className="size-09 ms-1">
               {data?.reservations &&
                 data?.reservations[0]?.boxes

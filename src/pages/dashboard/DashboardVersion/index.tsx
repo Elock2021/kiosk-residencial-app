@@ -109,8 +109,11 @@ const DashboardVersion = () => {
 
       <ConfirmationModal
         open={updateVersionModal}
+        variant="kiosk"
         headerText="Actualización"
         contentText="Hay una nueva version disponible. Desea instalar esta actualizacion ahora?"
+        cancelText="Más tarde"
+        confirmText="Actualizar ahora"
         onConfirm={() => _handleMasterKeyValidation()}
         onCancel={() => setUpdateVersionModal(false)}
       />

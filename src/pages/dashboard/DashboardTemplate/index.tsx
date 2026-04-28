@@ -1,62 +1,18 @@
-/* eslint-disable react-hooks/exhaustive-deps */
 import Logo from "../../../components/Logo";
-import ItemMenu from "./ItemMenu";
 import Locker from "../../../assets/svg/locker.svg?react";
-import Box from "../../../assets/svg/locker.svg?react";
-import Orders from "../../../assets/svg/package.svg?react";
 import LogOut from "../../../assets/svg/logout.svg?react";
-import Coms from "../../../assets/svg/coms.svg?react";
-import { IoCloudDownload } from "react-icons/io5";
-import { useState, useEffect } from "react";
-import { useLocation, useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import { useDispatch } from "react-redux";
 import { set_session } from "../../../redux/actions/session";
 import { useSelector } from "react-redux";
 
 const DashboardTemplate = (props: any) => {
   const { children } = props;
-  const location = useLocation();
+  const HEADER_HEIGHT = 72;
   const navigate = useNavigate();
   const { session } = useSelector((state: any) => ({ session: state.session }));
 
-  const [state, setState] = useState({
-    menu: [
-      {
-        label: "Cajas",
-        url: "/dashboard",
-        Icon: Box,
-        selected: false,
-      },
-      {
-        label: "Pedidos",
-        url: "/dashboard/orders",
-        Icon: Orders,
-        selected: false,
-      },
-      {
-        label: "Puertos",
-        url: "/dashboard/doors",
-        Icon: Coms,
-        selected: false,
-      },
-      {
-        label: "Actualización",
-        url: "/dashboard/version",
-        Icon: IoCloudDownload,
-        selected: false,
-      },
-    ],
-  });
-
   const dispatch: any = useDispatch();
-
-  useEffect(() => {
-    state.menu.forEach((menu: any) => {
-      menu.selected = menu.url === location.pathname;
-    });
-
-    setState({ ...state });
-  }, [location]);
 
   const _handleLogout = () => {
     dispatch(
@@ -70,45 +26,61 @@ const DashboardTemplate = (props: any) => {
   };
 
   return (
-    <div className="container-fluid h-100 background-color-base">
+    <div
+      className="container-fluid background-color-base"
+      style={{ height: "100vh", minHeight: "100vh", overflow: "hidden" }}
+    >
       <div className="row h-100 color-black">
-        <div
-          className=" h-100 background-color-white shadow-sm d-flex flex-column align-items-center p-0"
-          style={{ width: "11%" }}
-        >
-          <div className="w-100 px-3 pt-3 pb-2 text-center">
-            <Logo company="gux" />
-          </div>
-
-          {state.menu.map((menu: any) => (
-            <ItemMenu {...menu} key={`${menu.label}-${menu.url}`} />
-          ))}
-
-          <ItemMenu
-            label="Cerrar"
-            url="dashboard/exit"
-            Icon={LogOut}
-            onClick={_handleLogout}
-          />
-        </div>
-        <div className="h-100 m-0 p-0" style={{ width: "89%" }}>
+        <div className="h-100 m-0 p-0 col-12">
           <div
-            className="w-100 background-color-gris shadow-sm px-3 size-09 d-flex justify-content-end align-items-center"
+            className="w-100 shadow-sm ps-4 pe-2 d-flex align-items-center"
             style={{
-              fontWeight: "bold",
-              height: "8vh",
-              borderBottom: "1px solid #f3f3f3",
+              height: `${HEADER_HEIGHT}px`,
+              borderBottom: "1px solid #dcdfe3",
+              backgroundColor: "#ffffff",
+              position: "sticky",
+              top: 0,
+              zIndex: 50,
             }}
           >
-            {session?.profile?.username}
-            <Locker
-              style={{ width: "30px", height: "30px" }}
-              className="ms-3"
-            />
+            <div className="d-flex align-items-center" style={{ minWidth: "210px" }}>
+              <Logo company="gux" style={{ height: "46px", width: "auto", objectFit: "contain" }} />
+            </div>
+
+            <div
+              className="d-flex align-items-center px-3 py-2 rounded"
+              style={{ backgroundColor: "#f4f6f8", border: "1px solid #e1e5ea" }}
+            >
+              <span style={{ fontWeight: 700, fontSize: "15px" }}>{session?.profile?.username}</span>
+              <Locker style={{ width: "26px", height: "26px" }} className="ms-2" />
+            </div>
+
+            <button
+              className="btn d-flex align-items-center ms-auto"
+              onClick={_handleLogout}
+              style={{
+                fontWeight: 700,
+                border: "1px solid #d2d7dd",
+                backgroundColor: "#ffffff",
+                color: "#20242b",
+                borderRadius: "10px",
+                padding: "6px 12px",
+                marginRight: 0,
+              }}
+            >
+              <LogOut style={{ width: "22px", height: "22px" }} className="me-1" />
+              Cerrar
+            </button>
           </div>
           <div
             className="content w-100"
-            style={{ height: "92vh", overflow: "auto" }}
+            style={{
+              height: `calc(100vh - ${HEADER_HEIGHT}px)`,
+              minHeight: `calc(100vh - ${HEADER_HEIGHT}px)`,
+              overflowY: "auto",
+              overflowX: "hidden",
+              backgroundColor: "#f0f6f6",
+            }}
           >
             {children}
           </div>
