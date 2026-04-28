@@ -1,7 +1,6 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 import { useEffect, useRef, useState } from "react";
 import { useNavigate } from "react-router-dom";
-import Keyboard from "../../../../components/Keyboard";
 import Logo from "../../../../components/Logo";
 import OrderService from "../../../../services/order.service";
 import { useSelector } from "react-redux";
@@ -9,40 +8,51 @@ import { _handleError } from "../../../../helpers/errors";
 import { useDispatch } from "react-redux";
 import { set_loader } from "../../../../redux/actions/loader";
 import { set_pickup } from "../../../../redux/actions/pickup";
-import LineInput from "../../../../components/LineInput";
+import { LuQrCode } from "react-icons/lu";
+import { LuHome } from "react-icons/lu";
+import { LuKeyboard } from "react-icons/lu";
+
+const NUMBER_KEYS = ["1", "2", "3", "4", "5", "6", "7", "8", "9"];
+const LETTER_KEYS = [
+  "Q",
+  "W",
+  "E",
+  "R",
+  "T",
+  "Y",
+  "U",
+  "I",
+  "O",
+  "P",
+  "A",
+  "S",
+  "D",
+  "F",
+  "G",
+  "H",
+  "J",
+  "K",
+  "L",
+  "Ñ",
+  "Z",
+  "X",
+  "C",
+  "V",
+  "B",
+  "N",
+  "M",
+];
+const LETTER_ROWS = [
+  ["Q", "W", "E", "R", "T", "Y", "U", "I", "O", "P"],
+  ["A", "S", "D", "F", "G", "H", "J", "K", "L", "Ñ"],
+  ["Z", "X", "C", "V", "B", "N", "M"],
+];
 
 const Pickup = () => {
-  const [state, setState] = useState<any>({
-    fields: {
-      field1: {
-        value: "",
-        selected: true,
-      },
-      field2: {
-        value: "",
-        selected: false,
-      },
-      field3: {
-        value: "",
-        selected: false,
-      },
-      field4: {
-        value: "",
-        selected: false,
-      },
-      field5: {
-        value: "",
-        selected: false,
-      },
-      field6: {
-        value: "",
-        selected: false,
-      },
-    },
-    qrcode: "",
-  });
+  const [qrcode, setQrcode] = useState("");
+  const [showManualInput, setShowManualInput] = useState(false);
+  const [manualMode, setManualMode] = useState<"numbers" | "letters">("numbers");
 
-  const keyboardRef = useRef<any>();
   const inputRef: any = useRef<any>();
   const navigate = useNavigate();
   const { session } = useSelector((state: any) => ({ session: state.session }));
@@ -50,25 +60,14 @@ const Pickup = () => {
   const dispatch: any = useDispatch();
 
   useEffect(() => {
-    const qrcodelength: any = state.qrcode.length;
-
-    Array.from({ length: 6 }).forEach((_: any, index: any) => {
-      state.fields[`field${index + 1}`] = {
-        value: state.qrcode[index],
-        selected: index === qrcodelength ? true : false,
-      };
-    });
-
-    inputRef.current.value = state.qrcode;
-
-    setState({
-      ...state,
-    });
-
-    if (qrcodelength === 6) {
-      _handleValidateCode(state.qrcode);
+    if (inputRef.current) {
+      inputRef.current.value = qrcode;
     }
-  }, [state.qrcode]);
+
+    if (qrcode.length === 6) {
+      _handleValidateCode(qrcode);
+    }
+  }, [qrcode]);
 
   useEffect(() => {
     const interval: any = setInterval(() => {
@@ -83,25 +82,6 @@ const Pickup = () => {
   useEffect(() => {
     dispatch(set_loader({ is_loading: false }));
   }, []);
-
-  const _handleOnKeyPress = (button: any) => {
-    if (button !== "{bksp}") {
-      if (state.qrcode.length <= 5) {
-        setState({ ...state, qrcode: state.qrcode + button });
-      } else {
-        setState({ ...state, qrcode: button });
-        keyboardRef.current.setInput(button);
-      }
-    } else {
-      state.qrcode = state.qrcode.substring(0, state.qrcode.length - 1);
-      setState({ ...state });
-      keyboardRef.current.setInput(state.qrcode);
-    }
-  };
-
-  const _handleOnChange = (value: any) => {
-    console.log("ONCHANGE", value);
-  };
 
   const _handleValidateCode = async (code: any) => {
     try {
@@ -122,67 +102,165 @@ const Pickup = () => {
   };
 
   const _handleChangeInput = (e: any) => {
-    if (e.target.value.length > 6) {
-      const firstLetter: any = e.target.value.substring(
-        e.target.value.length - 1
-      );
-      setState({ ...state, qrcode: firstLetter?.toUpperCase() });
-    } else {
-      setState({ ...state, qrcode: e?.target?.value?.toUpperCase() });
-    }
+    const normalized = String(e?.target?.value || "")
+      .toUpperCase()
+      .replace(/\s+/g, "");
+    setQrcode(normalized.slice(-6));
+  };
+
+  const _insertCharacter = (character: string) => {
+    setQrcode((prev) => (prev + character).toUpperCase().slice(0, 6));
+  };
+
+  const _deleteLastCharacter = () => {
+    setQrcode((prev) => prev.slice(0, -1));
   };
 
   const _clearField = () => {
-    inputRef.current.value = "";
-    setState({ ...state, qrcode: "" });
+    setQrcode("");
+    if (inputRef.current) inputRef.current.value = "";
   };
 
+  const activeKeys =
+    manualMode === "numbers" ? NUMBER_KEYS : LETTER_KEYS;
+
   return (
-    <div className="container-fluid h-100 res-page">
+    <div className="container-fluid h-100 res-page res-page--pickup-qr">
       <input
         type="text"
         ref={inputRef}
         id="codetext"
         style={{ opacity: 0, position: "absolute" }}
         onChange={_handleChangeInput}
-        maxLength={7}
+        maxLength={6}
       />
-      <div className="w-100 text-center my-4">
+      <div className="w-100 my-4 ps-4 text-start">
         <Logo style={{ width: "100px" }} />
       </div>
+      <div className="res-pickup-top-actions">
+        <button className="main-button res-pickup-home-button" onClick={() => navigate("/")}>
+          <span>Volver</span>
+          <LuHome />
+        </button>
+      </div>
       <div className="res-content d-flex justify-content-center align-items-center p-0">
-        <div className="res-kiosk-panel d-flex align-items-center justify-content-around flex-column">
-          <div className="w-100 text-center bold size-14 color-white">
-            Introduce o escanea el código QR
+        <div className="res-pickup-qr-panel d-flex align-items-center justify-content-center flex-column">
+          <h1 className="res-pickup-qr-title">Escanea tu QR para retirar</h1>
+          <div className="res-pickup-qr-frame" aria-hidden="true">
+            <LuQrCode />
           </div>
-
-          <div className="w-100 d-flex justify-content-center my-3 pb-2">
-            <div className="res-code-grid d-flex justify-content-center">
-              {Object.keys(state.fields).map((key: any) => (
-                <LineInput {...state.fields[key]} key={key} />
-              ))}
-            </div>
-          </div>
-
-          <div className="w-100 keyboard" style={{ height: "58vh" }}>
-            <Keyboard
-              onKeyPress={_handleOnKeyPress}
-              onChange={_handleOnChange}
-              keyboardRef={keyboardRef}
-              layoutType={"spanish_basic_without_space"}
-            />
-          </div>
-
-          <div className="res-footer-actions mt-2">
-            <button className="main-button-yellow" onClick={_clearField}>
-              Limpiar
-            </button>
-            <button className="main-button" onClick={() => navigate("/")}>
-              Cancelar
-            </button>
-          </div>
+          <button
+            className="main-button-yellow res-pickup-manual-trigger"
+            onClick={() => setShowManualInput(true)}
+          >
+            <LuKeyboard />
+            Digitar manualmente
+          </button>
         </div>
       </div>
+
+      {showManualInput && (
+        <div className="res-pickup-manual-modal-backdrop" onClick={() => setShowManualInput(false)} role="presentation">
+          <div className="res-pickup-manual-modal" onClick={(e) => e.stopPropagation()} role="dialog" aria-modal="true">
+            <button type="button" className="res-help-modal__close" onClick={() => setShowManualInput(false)} aria-label="Cerrar">
+              ×
+            </button>
+            <div className="res-pickup-manual-title">Ingrese su código</div>
+            <div className="res-keypad-input-box" aria-live="polite">
+              <span className={qrcode ? "res-keypad-input-value" : "res-keypad-input-placeholder"}>
+                {qrcode || "Ej: A1B2C3"}
+              </span>
+              <span className="res-keypad-caret" aria-hidden="true">
+                |
+              </span>
+            </div>
+
+            <div className="res-botonera-shell" role="group" aria-label="Teclado manual de código">
+              <div className="res-botonera-mode">
+                <button
+                  type="button"
+                  className={`res-botonera-mode__btn ${manualMode === "numbers" ? "is-active" : ""}`}
+                  onClick={() => setManualMode("numbers")}
+                >
+                  123
+                </button>
+                <button
+                  type="button"
+                  className={`res-botonera-mode__btn ${manualMode === "letters" ? "is-active" : ""}`}
+                  onClick={() => setManualMode("letters")}
+                >
+                  ABC
+                </button>
+              </div>
+
+              {manualMode === "letters" ? (
+                <div className="res-botonera-letters-rows">
+                  {LETTER_ROWS.map((row, rowIndex) => (
+                    <div className="res-botonera-letters-row" key={`letters-row-${rowIndex}`}>
+                      {row.map((key) => (
+                        <button
+                          key={`${manualMode}-${key}`}
+                          type="button"
+                          className="res-botonera-key"
+                          onClick={() => _insertCharacter(key)}
+                        >
+                          {key}
+                        </button>
+                      ))}
+                    </div>
+                  ))}
+                </div>
+              ) : (
+                <div className={`res-botonera-grid res-botonera-grid--${manualMode}`}>
+                  {activeKeys.map((key) => (
+                    <button
+                      key={`${manualMode}-${key}`}
+                      type="button"
+                      className="res-botonera-key"
+                      onClick={() => _insertCharacter(key)}
+                    >
+                      {key}
+                    </button>
+                  ))}
+                </div>
+              )}
+
+              {manualMode === "numbers" ? (
+                <div className="res-botonera-actions">
+                  <button type="button" className="res-botonera-key res-botonera-key--dark" onClick={_deleteLastCharacter}>
+                    Borrar
+                  </button>
+                  <button type="button" className="res-botonera-key" onClick={() => _insertCharacter("0")}>
+                    0
+                  </button>
+                  <button
+                    type="button"
+                    className="res-botonera-key res-botonera-key--accent"
+                    onClick={() => qrcode.length === 6 && _handleValidateCode(qrcode)}
+                    disabled={qrcode.length !== 6}
+                  >
+                    OK
+                  </button>
+                </div>
+              ) : (
+                <div className="res-botonera-actions res-botonera-actions--two-cols">
+                  <button type="button" className="res-botonera-key res-botonera-key--dark" onClick={_deleteLastCharacter}>
+                    Borrar
+                  </button>
+                  <button
+                    type="button"
+                    className="res-botonera-key res-botonera-key--accent"
+                    onClick={() => qrcode.length === 6 && _handleValidateCode(qrcode)}
+                    disabled={qrcode.length !== 6}
+                  >
+                    OK
+                  </button>
+                </div>
+              )}
+            </div>
+          </div>
+        </div>
+      )}
     </div>
   );
 };
