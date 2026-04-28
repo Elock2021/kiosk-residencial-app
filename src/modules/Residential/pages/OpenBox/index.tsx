@@ -11,7 +11,6 @@ import OrderService from "../../../../services/order.service";
 import { set_order } from "../../../../redux/actions/order";
 import DoorLockerService from "../../../../services/door_locker.service";
 import BoxComponent from "./Box";
-import modResPng from "../../assets/mod_res.png";
 
 const OpenBox = () => {
   const [boxes, setBoxes] = useState<any>([]);
@@ -55,17 +54,18 @@ const OpenBox = () => {
         return acc;
       }, {});
 
-      const groupedBoxes: any = Object.keys(grouped).map((key: any) => {
-        const target: any = grouped[key][0];
+      const groupedBoxes: any = [1, 2, 3].map((boxTypeId: number) => {
+        const currentGroup: any[] = grouped[boxTypeId] || [];
+        const target: any = currentGroup[0] || {};
 
         return {
-          id: key,
-          name: target?.box_type?.name,
-          quantity: grouped[key]?.length,
-          width: target?.box_type?.width,
-          height: target?.box_type?.height,
-          depht: target?.box_type?.depht,
-          box_type_id: target?.box_type?.id,
+          id: `${boxTypeId}`,
+          name: target?.box_type?.name || `Casillero ${boxTypeId}`,
+          quantity: currentGroup.length,
+          width: target?.box_type?.width || 0,
+          height: target?.box_type?.height || 0,
+          depht: target?.box_type?.depht || 0,
+          box_type_id: boxTypeId,
           quantity_selected: 1,
         };
       });
@@ -160,66 +160,52 @@ const OpenBox = () => {
     },
   ];
 
-  const _renderHelpButton = () => (
-    <button
-      type="button"
-      onClick={() => setIsHelpModalOpen(true)}
-      className="res-openbox-help-icon-button"
-      aria-label="Abrir ayuda"
-      title="Ayuda"
-    >
-      ?
-    </button>
-  );
-
   return (
     <div className="container-fluid h-100 res-page">
       <Header />
 
-      <div className="res-content d-flex align-items-center justify-content-center mt-2">
-        <div className="res-flow res-openbox-flow" style={{ gap: "8px" }}>
-          {_renderHelpButton()}
-          <div className="res-title">Selecciona tamaño</div>
-          <div className="d-flex justify-content-center align-items-center w-100">
-            <div className="w-100">
-              <div className="bold d-flex flex-column">
-                {loader.is_loading ? (
-                  <div className="res-state-message">Cargando cajas...</div>
-                ) : (
-                  <div className="res-openbox-panel">
-                    <div className="res-openbox-image">
-                      <img
-                        src={modResPng}
-                        alt="Modulo residencial"
-                        style={{ width: "48%", maxWidth: "100%", height: "auto" }}
-                      />
-                    </div>
+      <div className="res-content d-flex align-items-start justify-content-center mt-2">
+        <div className="res-flow res-openbox-flow res-size-step">
+          <p className="res-size-step__subtitle">
+            Selecciona el espacio ideal según el tamaño de lo que deseas guardar.
+          </p>
 
-                    {boxes.length > 0 ? (
-                      <div className="res-openbox-list">
-                        {boxes.map((box: any, index: number) => (
-                          <BoxComponent
-                            key={index}
-                            box={box}
-                            _handleOnclickBox={_handleOnclickBox}
-                          />
-                        ))}
-                      </div>
-                    ) : (
-                      <div className="res-openbox-list">
-                        <div className="res-openbox-empty res-state-message">
-                          <span className="d-block">No hay cajas disponibles</span>
-                          <span className="d-block">Por favor deje el paquete en conserjería</span>
-                        </div>
-                      </div>
-                    )}
-                  </div>
-                )}
+          {loader.is_loading ? (
+            <div className="res-state-message">Cargando cajas...</div>
+          ) : boxes.length > 0 ? (
+            <div className="res-size-step__cards">
+              {boxes.map((box: any) => (
+                <BoxComponent key={box.box_type_id} box={box} _handleOnclickBox={_handleOnclickBox} />
+              ))}
+            </div>
+          ) : (
+            <div className="res-size-step__empty res-state-message">
+              <span className="d-block">No hay cajas disponibles</span>
+              <span className="d-block">Por favor deje el paquete en conserjería</span>
+            </div>
+          )}
+
+          <div className="res-size-step__help">
+            <div className="res-size-step__help-icon" aria-hidden="true">
+              💡
+            </div>
+            <div className="res-size-step__help-content">
+              <div className="res-size-step__help-title">¿No estás seguro qué tamaño elegir?</div>
+              <div className="res-size-step__help-text">
+                Revisa las medidas y ejemplos para encontrar el espacio que mejor se adapte a tu envío.
               </div>
             </div>
+            <button
+              type="button"
+              className="res-size-step__help-action"
+              onClick={() => setIsHelpModalOpen(true)}
+              aria-label="Abrir guía de tamaños"
+            >
+              Ver guía de tamaños
+            </button>
           </div>
 
-          <div className="w-100 text-center mt-1">
+          <div className="w-100 text-center mt-2">
             <button
               className="main-button res-secondary"
               onClick={() => navigate(`/delivery-with-apartament/${params.apartment}`)}
