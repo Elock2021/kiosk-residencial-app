@@ -162,7 +162,7 @@ const OpenBox = () => {
 
   return (
     <div className="container-fluid h-100 res-page">
-      <Header />
+      <Header hideThemeToggle />
 
       <div className="res-content d-flex align-items-start justify-content-center mt-2">
         <div className="res-flow res-openbox-flow res-size-step">
@@ -185,29 +185,10 @@ const OpenBox = () => {
             </div>
           )}
 
-          <div className="res-size-step__help">
-            <div className="res-size-step__help-icon" aria-hidden="true">
-              💡
-            </div>
-            <div className="res-size-step__help-content">
-              <div className="res-size-step__help-title">¿No estás seguro qué tamaño elegir?</div>
-              <div className="res-size-step__help-text">
-                Revisa las medidas y ejemplos para encontrar el espacio que mejor se adapte a tu envío.
-              </div>
-            </div>
+          <div className="w-100 text-center mt-4">
             <button
               type="button"
-              className="res-size-step__help-action"
-              onClick={() => setIsHelpModalOpen(true)}
-              aria-label="Abrir guía de tamaños"
-            >
-              Ver guía de tamaños
-            </button>
-          </div>
-
-          <div className="w-100 text-center mt-2">
-            <button
-              className="main-button res-secondary"
+              className="res-help-back-button"
               onClick={() => navigate(`/delivery-with-apartament/${params.apartment}`)}
             >
               Volver

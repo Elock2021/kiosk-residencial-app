@@ -30,7 +30,7 @@ const BOX_TYPE_CONFIG: any = {
     examples: [
       { label: "Bolso pequeño", image: ejemploBolso },
       { label: "Caja mediana", image: ejemploZapatos },
-      { label: "Paquete", image: ejemploCompras },
+      { label: "Paquete mediano", image: ejemploGrande },
     ],
   },
   3: {
@@ -38,9 +38,9 @@ const BOX_TYPE_CONFIG: any = {
     description: "Ideal para equipaje y paquetes grandes",
     image: casilleroGrande,
     examples: [
-      { label: "Mochila grande", image: ejemploMochila },
-      { label: "Paquete grande", image: ejemploGrande },
-      { label: "Bulto mediano", image: ejemploMediano },
+      { label: "Mochila", image: ejemploMochila },
+      { label: "Compras", image: ejemploCompras },
+      { label: "Caja grande", image: ejemploGrande },
     ],
   },
 };
@@ -75,6 +75,19 @@ const BoxComponent = ({ _handleOnclickBox, box }: any) => {
   };
 
   const isAvailable = Number(box?.quantity || 0) > 0;
+  const imageHeightByType: Record<number, string> = {
+    1: "130px",
+    2: "150px",
+    3: "170px",
+  };
+  const imageHeight = imageHeightByType[box.box_type_id] || "170px";
+  const sizeClassByType: Record<number, string> = {
+    1: "res-size-card--small",
+    2: "res-size-card--medium",
+    3: "res-size-card--large",
+  };
+  const sizeClass = sizeClassByType[box.box_type_id] || "";
+
   const onSelect = () => {
     if (!isAvailable) {
       return;
@@ -84,7 +97,7 @@ const BoxComponent = ({ _handleOnclickBox, box }: any) => {
 
   return (
     <div
-      className={`res-size-card ${!isAvailable ? "res-size-card--disabled" : ""}`}
+      className={`res-size-card ${sizeClass} ${!isAvailable ? "res-size-card--disabled" : ""}`}
       role="button"
       tabIndex={isAvailable ? 0 : -1}
       onClick={onSelect}
@@ -105,7 +118,7 @@ const BoxComponent = ({ _handleOnclickBox, box }: any) => {
       </div>
 
       <div className="res-size-card__image-wrap">
-        <Image src={config.image} style={{ width: "100%", height: "170px", objectFit: "contain" }} />
+        <Image src={config.image} style={{ width: "100%", height: imageHeight, objectFit: "contain" }} />
       </div>
 
       <div className="res-size-card__examples">
@@ -113,7 +126,7 @@ const BoxComponent = ({ _handleOnclickBox, box }: any) => {
         <div className="res-size-card__examples-grid">
           {config.examples.map((item: any) => (
             <div className="res-size-card__example" key={item.label}>
-              <Image src={item.image} style={{ width: "56px", height: "56px", objectFit: "contain" }} />
+              <Image src={item.image} style={{ width: "48px", height: "48px", objectFit: "contain" }} />
               <div className="res-size-card__example-label">{item.label}</div>
             </div>
           ))}
