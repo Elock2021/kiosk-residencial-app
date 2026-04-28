@@ -10,6 +10,7 @@ import { set_loader } from "../../../../redux/actions/loader";
 import { set_pickup } from "../../../../redux/actions/pickup";
 import { LuQrCode } from "react-icons/lu";
 import { LuKeyboard } from "react-icons/lu";
+import { FiHome } from "react-icons/fi";
 
 const NUMBER_KEYS = ["1", "2", "3", "4", "5", "6", "7", "8", "9"];
 const LETTER_KEYS = [
@@ -128,8 +129,17 @@ const Pickup = () => {
         onChange={_handleChangeInput}
         maxLength={6}
       />
-      <div className="w-100 my-4 ps-4 text-start">
+      <div className="w-100 my-4 px-4 d-flex align-items-center justify-content-between">
         <Logo style={{ width: "100px" }} />
+        <button
+          type="button"
+          className="res-theme-toggle"
+          onClick={() => navigate("/", { replace: true })}
+          aria-label="Ir al inicio"
+          title="Inicio"
+        >
+          <FiHome aria-hidden="true" />
+        </button>
       </div>
       <div className="res-content d-flex justify-content-center align-items-center p-0">
         <div className="res-pickup-qr-panel d-flex align-items-center justify-content-center flex-column">

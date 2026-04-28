@@ -7,6 +7,7 @@ import { _pushToastMessage } from "../../../../helpers/messages";
 import { useDispatch } from "react-redux";
 import { set_order } from "../../../../redux/actions/order";
 import { useSelector } from "react-redux";
+import { FiHome } from "react-icons/fi";
 
 const CustodyKeyboard = () => {
   const [state, setState] = useState<any>({
@@ -72,8 +73,17 @@ const CustodyKeyboard = () => {
 
   return (
     <div className="container-fluid h-100 res-page">
-      <div className="w-100 my-4 ps-4 text-start">
+      <div className="w-100 my-4 px-4 d-flex align-items-center justify-content-between">
         <Logo style={{ width: "100px" }} />
+        <button
+          type="button"
+          className="res-theme-toggle"
+          onClick={() => navigate("/", { replace: true })}
+          aria-label="Ir al inicio"
+          title="Inicio"
+        >
+          <FiHome aria-hidden="true" />
+        </button>
       </div>
       <div className="d-flex justify-content-center align-items-center p-0 res-custody-stage">
         <div className="d-flex align-items-center justify-content-around flex-column p-5 res-custody-content">

@@ -166,7 +166,7 @@ const ReadDocument = () => {
 
   return (
     <div className="container-fluid h-100 res-page">
-      <Header hideThemeToggle={step !== "menu"} showThemeToggle />
+      <Header hideThemeToggle={false} showThemeToggle={step === "menu"} />
       <div className="res-content d-flex justify-content-center res-content--help">
         <div
           className={`res-help-module ${step === "menu" ? "res-help-module--menu" : "res-help-module--form"} ${

@@ -145,7 +145,7 @@ const Apartaments = () => {
 
   return (
     <div className="container-fluid h-100 res-page">
-      <Header />
+      <Header hideThemeToggle={false} showThemeToggle={false} />
       <div className="res-content d-flex justify-content-center res-content--help">
         <div className="res-help-module res-help-module--menu res-delivery-apartment">
           {loader.is_loading && (

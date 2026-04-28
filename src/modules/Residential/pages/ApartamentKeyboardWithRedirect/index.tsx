@@ -3,6 +3,7 @@ import { useEffect, useMemo, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import Logo from "../../../../components/Logo";
 import { _pushToastMessage } from "../../../../helpers/messages";
+import { FiHome } from "react-icons/fi";
 
 type ApartmentKeyboardWithRedirectProps = {
   embedded?: boolean;
@@ -242,8 +243,17 @@ const ApartmentKeyboardWithRedirect = ({
 
   return (
     <div className="container-fluid h-100 res-page">
-      <div className="w-100 text-center my-3">
+      <div className="w-100 d-flex justify-content-between align-items-center my-3 px-4">
         <Logo style={{ width: "100px" }} />
+        <button
+          type="button"
+          className="res-theme-toggle"
+          onClick={() => navigate("/", { replace: true })}
+          aria-label="Ir al inicio"
+          title="Inicio"
+        >
+          <FiHome aria-hidden="true" />
+        </button>
       </div>
       <div className="res-content d-flex justify-content-center align-items-center p-0">
         {content}

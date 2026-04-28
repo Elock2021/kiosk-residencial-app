@@ -156,7 +156,7 @@ const ApartamentsWithoutCode = () => {
 
   return (
     <div className="container-fluid h-100 res-page">
-      <Header />
+      <Header hideThemeToggle={false} showThemeToggle={false} />
       <div className="res-content d-flex align-items-center justify-content-center">
         <div className="res-flow" style={{ gap: "10px" }}>
           {loader.is_loading && (

@@ -50,21 +50,20 @@ const OpenBoxCustody = () => {
         return acc;
       }, {});
 
-      const boxes: any = Object.keys(grouped).map((key: any) => {
-        const target: any = grouped[key][0];
+      const boxes: any = [1, 2, 3].map((boxTypeId: number) => {
+        const currentGroup: any[] = grouped[boxTypeId] || [];
+        const target: any = currentGroup[0] || {};
 
-        const box: any = {
-          id: key,
-          name: target?.box_type?.name,
-          quantity: grouped[key]?.length,
-          width: target?.box_type?.width,
-          height: target?.box_type?.height,
-          depht: target?.box_type?.depht,
-          box_type_id: target?.box_type?.id,
+        return {
+          id: `${boxTypeId}`,
+          name: target?.box_type?.name || `Casillero ${boxTypeId}`,
+          quantity: currentGroup.length,
+          width: target?.box_type?.width || 0,
+          height: target?.box_type?.height || 0,
+          depht: target?.box_type?.depht || 0,
+          box_type_id: boxTypeId,
           quantity_selected: 1,
         };
-
-        return box;
       });
 
       setBoxes(boxes);

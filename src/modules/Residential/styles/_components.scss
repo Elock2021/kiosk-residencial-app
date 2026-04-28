@@ -6322,6 +6322,13 @@ button:focus-visible {
   width: min(94vw, 1360px);
 }
 
+.res-kiosk-home-action {
+  position: absolute;
+  top: 20px;
+  right: 28px;
+  z-index: 5;
+}
+
 @media (max-width: 1024px) and (max-height: 820px) {
   .res-custody-content {
     padding: 20px 22px 14px !important;
