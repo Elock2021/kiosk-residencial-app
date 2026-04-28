@@ -35,7 +35,7 @@ const BOX_TYPE_CONFIG: any = {
   },
   3: {
     label: "Grande",
-    description: "Ideal para equipaje y paquetes grandes",
+    description: "Ideal para compras y paquetes grandes",
     image: casilleroGrande,
     examples: [
       { label: "Mochila", image: ejemploMochila },

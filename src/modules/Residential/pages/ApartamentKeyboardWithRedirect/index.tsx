@@ -15,6 +15,7 @@ type ApartmentKeyboardWithRedirectProps = {
   loading?: boolean;
   onContinue?: (apartment: string) => void | Promise<void>;
   onBack?: () => void;
+  backButtonClassName?: string;
 };
 
 const VALID_APARTMENT_REGEX = /^\d{1,4}[A-Z]?$/;
@@ -35,6 +36,7 @@ const ApartmentKeyboardWithRedirect = ({
   loading = false,
   onContinue,
   onBack,
+  backButtonClassName = "res-keypad-back-button",
 }: ApartmentKeyboardWithRedirectProps) => {
   const [data, setData] = useState<string>(String(initialValue || "").toUpperCase());
   const [mode, setMode] = useState<"numbers" | "letters">("numbers");
@@ -220,7 +222,7 @@ const ApartmentKeyboardWithRedirect = ({
 
       <div className="text-center my-2">
         <button
-          className="res-keypad-back-button"
+          className={backButtonClassName}
           onClick={() => {
             if (onBack) {
               onBack();

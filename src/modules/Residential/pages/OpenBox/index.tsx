@@ -162,7 +162,7 @@ const OpenBox = () => {
 
   return (
     <div className="container-fluid h-100 res-page">
-      <Header hideThemeToggle />
+      <Header />
 
       <div className="res-content d-flex align-items-start justify-content-center mt-2">
         <div className="res-flow res-openbox-flow res-size-step">

@@ -5556,6 +5556,174 @@ button:focus-visible {
   font-weight: 700;
 }
 
+.res-confirm-guided {
+  width: min(920px, 96vw);
+  min-height: 620px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-top: -24px;
+}
+
+.res-confirm-guided__panel {
+  width: min(760px, 100%);
+  min-height: 560px;
+  border-radius: 0;
+  border: none;
+  background: transparent;
+  box-shadow: none;
+  padding: 32px 30px 34px;
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
+
+.res-confirm-guided__eyebrow {
+  margin: 0;
+  font-size: 0.95rem;
+  letter-spacing: 0.13em;
+  text-transform: uppercase;
+  font-weight: 800;
+  color: color-mix(in srgb, var(--res-text) 70%, var(--res-muted));
+}
+
+.res-confirm-guided__title {
+  margin: 10px auto 0;
+  width: min(620px, 100%);
+  font-size: clamp(2.25rem, 1.98rem + 0.85vw, 3rem);
+  line-height: 1.08;
+  font-weight: 800;
+  color: var(--res-text);
+}
+
+.res-confirm-guided__hint {
+  margin: 12px auto 0;
+  width: min(560px, 100%);
+  font-size: 1.16rem;
+  line-height: 1.28;
+  color: color-mix(in srgb, var(--res-text) 78%, var(--res-muted));
+}
+
+.res-confirm-guided__actions {
+  margin-top: 36px;
+  display: grid;
+  gap: 18px;
+  justify-items: center;
+}
+
+.res-confirm-guided__secondary {
+  width: min(560px, 100%);
+  min-height: 64px;
+  border-radius: 18px;
+  border: 2px solid color-mix(in srgb, var(--res-border-strong) 82%, transparent);
+  background: color-mix(in srgb, var(--res-surface) 84%, transparent);
+  color: color-mix(in srgb, var(--res-text) 88%, var(--res-muted));
+  font-size: 1.34rem;
+  font-weight: 700;
+  padding: 8px 20px;
+  transition: transform 0.14s ease, box-shadow 0.2s ease, border-color 0.2s ease;
+}
+
+.res-confirm-guided__secondary:hover {
+  border-color: color-mix(in srgb, var(--res-border-strong) 96%, transparent);
+  box-shadow: 0 10px 18px rgba(14, 26, 43, 0.12);
+}
+
+.res-confirm-guided__secondary:active {
+  transform: translateY(1px);
+}
+
+.res-confirm-guided__primary {
+  width: min(560px, 100%);
+  min-height: 86px;
+  border-radius: 22px;
+  border: 2px solid #d8b300;
+  background: linear-gradient(180deg, #ffdc21 0%, #f5c300 100%);
+  color: #0f1c2d;
+  padding: 12px 20px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 16px;
+  font-weight: 800;
+  font-size: 2rem;
+  box-shadow: 0 16px 28px rgba(223, 180, 0, 0.36);
+  transition: transform 0.14s ease, box-shadow 0.2s ease, filter 0.2s ease;
+}
+
+.res-confirm-guided__primary--danger {
+  border-color: #d8a300;
+  background: linear-gradient(180deg, #ffe04a 0%, #f5bc00 100%);
+  margin-top: 10px;
+  margin-bottom: 14px;
+}
+
+.res-confirm-guided__primary:hover {
+  filter: brightness(1.03);
+  box-shadow: 0 18px 32px rgba(223, 180, 0, 0.42);
+}
+
+.res-confirm-guided__primary:focus-visible {
+  outline: none;
+  box-shadow: var(--res-focus), 0 18px 32px rgba(223, 180, 0, 0.42);
+}
+
+.res-confirm-guided__primary:active {
+  transform: translateY(1px);
+}
+
+.res-confirm-guided__primary-label {
+  line-height: 1;
+}
+
+.res-confirm-guided__timer-badge {
+  min-width: 58px;
+  min-height: 52px;
+  border-radius: 999px;
+  border: 2px solid color-mix(in srgb, #0f1c2d 28%, transparent);
+  background: rgba(255, 255, 255, 0.5);
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0 12px;
+}
+
+.res-confirm-guided__countdown {
+  margin-top: 8px;
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.res-confirm-guided__countdown-label {
+  font-size: 1rem;
+  font-weight: 600;
+  color: color-mix(in srgb, var(--res-text) 74%, var(--res-muted));
+}
+
+.res-confirm-guided__timer-badge .res-regressive-counter {
+  min-width: 2ch;
+  text-align: center;
+  font-size: 1.65rem;
+  font-weight: 900;
+  line-height: 1;
+  color: #0f1c2d;
+}
+
+.res-confirm-guided__timer-badge .res-regressive-counter--warning {
+  color: #8c5f00;
+}
+
+.res-confirm-guided__timer-badge .res-regressive-counter--danger {
+  color: #b3321f;
+}
+
+.res-regressive-counter {
+  font-size: 24px;
+  line-height: 1;
+}
+
 .res-primary {
   min-width: 320px;
   min-height: 66px;
