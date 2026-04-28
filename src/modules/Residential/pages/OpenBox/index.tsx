@@ -14,7 +14,8 @@ import BoxComponent from "./Box";
 
 const OpenBox = () => {
   const [boxes, setBoxes] = useState<any>([]);
-  const [isHelpModalOpen, setIsHelpModalOpen] = useState(false);
+  const [selectedBox, setSelectedBox] = useState<any>(null);
+  const [isSelectionModalOpen, setIsSelectionModalOpen] = useState(false);
   const { session, order, loader } = useSelector((state: any) => ({ session: state.session, order: state.order, loader: state.loader }));
 
   const navigate = useNavigate();
@@ -130,35 +131,30 @@ const OpenBox = () => {
     }
   };
 
-  const helpTemplates = [
-    {
-      title: "Caja Chica",
-      color: "#39B364",
-      examples: [
-        "Llaves, documentos o billetera",
-        "Cargador, cables y accesorios pequeños",
-        "Caja de lentes o estuche pequeño",
-      ],
-    },
-    {
-      title: "Caja Mediana",
-      color: "#39B3A1",
-      examples: [
-        "Caja de zapatos",
-        "Bolso o cartera mediana",
-        "Uno o dos paquetes de tamaño medio",
-      ],
-    },
-    {
-      title: "Caja Grande",
-      color: "#3988B3",
-      examples: [
-        "Mochila completa",
-        "Bolsa de supermercado mediana/grande",
-        "Paquete voluminoso que no entra en las anteriores",
-      ],
-    },
-  ];
+  const getBoxLabel = (box: any) => {
+    if (box?.box_type_id === 1) return "pequeño";
+    if (box?.box_type_id === 2) return "mediano";
+    if (box?.box_type_id === 3) return "grande";
+    return String(box?.name || "seleccionado");
+  };
+
+  const _handleRequestBoxSelection = (box: any) => {
+    setSelectedBox(box);
+    setIsSelectionModalOpen(true);
+  };
+
+  const _handleCancelSelection = () => {
+    setIsSelectionModalOpen(false);
+    setSelectedBox(null);
+  };
+
+  const _handleConfirmSelection = async () => {
+    if (!selectedBox) return;
+    const boxToOpen = selectedBox;
+    setIsSelectionModalOpen(false);
+    setSelectedBox(null);
+    await _handleOnclickBox(boxToOpen);
+  };
 
   return (
     <div className="container-fluid h-100 res-page">
@@ -175,7 +171,7 @@ const OpenBox = () => {
           ) : boxes.length > 0 ? (
             <div className="res-size-step__cards">
               {boxes.map((box: any) => (
-                <BoxComponent key={box.box_type_id} box={box} _handleOnclickBox={_handleOnclickBox} />
+                <BoxComponent key={box.box_type_id} box={box} _handleOnclickBox={_handleRequestBoxSelection} />
               ))}
             </div>
           ) : (
@@ -197,79 +193,23 @@ const OpenBox = () => {
         </div>
       </div>
 
-      {isHelpModalOpen && (
-        <div className="res-modal-overlay" onClick={() => setIsHelpModalOpen(false)}>
-          <div className="res-modal" onClick={(e) => e.stopPropagation()}>
-            <div className="d-flex align-items-center justify-content-between mb-3">
-              <div className="d-flex align-items-center">
-                <span
-                  className="d-flex align-items-center justify-content-center me-2"
-                  style={{
-                    width: "30px",
-                    height: "30px",
-                    borderRadius: "50%",
-                    background: "var(--res-accent)",
-                    color: "var(--res-on-accent)",
-                    fontWeight: 700,
-                  }}
-                >
-                  ?
-                </span>
-                <h4 className="mb-0">¿Qué cabe en cada casillero?</h4>
-              </div>
-              <button
-                type="button"
-                onClick={() => setIsHelpModalOpen(false)}
-                className="res-modal-close"
-                aria-label="Cerrar ayuda"
-              >
-                ×
+      {isSelectionModalOpen && (
+        <div className="res-modal-overlay" onClick={_handleCancelSelection}>
+          <div className="res-modal res-box-selection-modal" onClick={(e) => e.stopPropagation()}>
+            <h4 className="res-box-selection-modal__title">
+              ¿Está seguro que quiere seleccionar el casillero {getBoxLabel(selectedBox)}?
+            </h4>
+            <p className="res-box-selection-modal__text">
+              Si tu paquete no cabe, en la siguiente pantalla toca
+              {" "}
+              <strong>“No me sirve el casillero”</strong>.
+            </p>
+            <div className="res-box-selection-modal__actions">
+              <button type="button" className="res-help-back-button" onClick={_handleCancelSelection}>
+                Cancelar
               </button>
-            </div>
-            <div className="mb-3 p-3 res-modal-note">
-              Sugerencia: si no estás seguro, elige un locker un poco más grande para asegurar que tu
-              paquete entre sin problema.
-            </div>
-
-            {helpTemplates.map((item, index) => {
-              const examplesInTwoBullets: string[] =
-                item.examples.length > 2
-                  ? [item.examples[0], item.examples.slice(1).join(" / ")]
-                  : item.examples;
-
-              return (
-                <div key={index} className="mb-3 p-3 res-modal-item">
-                  <div className="d-flex align-items-center mb-2">
-                    <span
-                      style={{
-                        width: "12px",
-                        height: "12px",
-                        borderRadius: "3px",
-                        background: item.color,
-                        border: "1px solid #000",
-                        display: "inline-block",
-                        marginRight: "8px",
-                      }}
-                    />
-                    <strong>{item.title}</strong>
-                  </div>
-
-                  <ul className="mb-0" style={{ paddingLeft: "18px" }}>
-                    {examplesInTwoBullets.map((example: string, i: number) => (
-                      <li key={i}>{example}</li>
-                    ))}
-                  </ul>
-                </div>
-              );
-            })}
-
-            <div className="d-flex justify-content-center mt-2">
-              <button
-                type="button"
-                className="px-4 main-new-button-yellow"
-                onClick={() => setIsHelpModalOpen(false)}
-              >
-                Entendido
+              <button type="button" className="main-button-yellow" onClick={_handleConfirmSelection}>
+                Sí, seleccionar
               </button>
             </div>
           </div>
