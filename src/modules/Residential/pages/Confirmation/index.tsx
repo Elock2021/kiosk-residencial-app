@@ -75,22 +75,39 @@ const Confirmation = () => {
       <Header />
 
       <div className="res-content d-flex justify-content-center align-items-center">
-        <div className="res-confirm-flow">
-          <div className="res-confirm-title">Recuerde cerrar el casillero al finalizar</div>
-          <button className="main-button res-secondary" onClick={_handleGoBackToBoxSelection}>
-            No me sirve el casillero
-          </button>
+        <div className="res-confirm-guided">
+          <div className="res-confirm-guided__panel">
+            <p className="res-confirm-guided__eyebrow">Antes de finalizar</p>
+            <h1 className="res-confirm-guided__title">Cierra la puerta del casillero</h1>
+            <p className="res-confirm-guided__hint">Empuja la puerta hasta escuchar el clic.</p>
 
-          <div className="w-100 text-center mt-1">
-            <button className="main-button-yellow res-primary" onClick={_handleConfirmOrder}>
-              <div className="d-flex justify-content-center align-items-center">
-                <div className="me-3">Finalizar</div>
+            <div className="res-confirm-guided__actions">
+              <button
+                type="button"
+                className="res-confirm-guided__primary res-confirm-guided__primary--danger"
+                onClick={_handleGoBackToBoxSelection}
+              >
+                No me sirve el casillero
+              </button>
+
+              <button
+                type="button"
+                className="res-confirm-guided__secondary"
+                onClick={_handleConfirmOrder}
+              >
+                Finalizar
+              </button>
+
+              <div className="res-confirm-guided__countdown" aria-live="polite">
+                <span className="res-confirm-guided__countdown-label">Finaliza automáticamente en</span>
+                <span className="res-confirm-guided__timer-badge" aria-label="Tiempo restante para finalizar automáticamente">
                 <RegressiveCounter
                   clearIntervalAction={intervalStateControl}
                   handleCallback={_handleConfirmOrder}
                 />
+                </span>
               </div>
-            </button>
+            </div>
           </div>
         </div>
       </div>

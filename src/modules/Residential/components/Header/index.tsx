@@ -1,5 +1,7 @@
 import { useDispatch } from "react-redux";
 import { useSelector } from "react-redux";
+import { useNavigate } from "react-router-dom";
+import { FiHome } from "react-icons/fi";
 import Logo from "../../../../components/Logo";
 import { set_session } from "../../../../redux/actions/session";
 import ThemeToggle from "../ThemeToggle";
@@ -7,11 +9,13 @@ import "./component.header.scss";
 
 type HeaderProps = {
   hideThemeToggle?: boolean;
+  showThemeToggle?: boolean;
 };
 
-const Header = ({ hideThemeToggle = false }: HeaderProps) => {
+const Header = ({ hideThemeToggle = false, showThemeToggle = false }: HeaderProps) => {
   const { session } = useSelector((state: any) => ({ session: state.session }));
   const dispatch: any = useDispatch();
+  const navigate = useNavigate();
 
   const _handleSigIn = () => {
     dispatch(set_session({ ...session, sign_in_component: true }));
@@ -32,7 +36,20 @@ const Header = ({ hideThemeToggle = false }: HeaderProps) => {
                 <Logo />
               </button>
             </div>
-            {!hideThemeToggle && <ThemeToggle />}
+            {!hideThemeToggle && (
+              <div className="d-flex align-items-center gap-2">
+                <button
+                  type="button"
+                  className="res-theme-toggle"
+                  onClick={() => navigate("/", { replace: true })}
+                  aria-label="Ir al inicio"
+                  title="Inicio"
+                >
+                  <FiHome aria-hidden="true" />
+                </button>
+                {showThemeToggle && <ThemeToggle />}
+              </div>
+            )}
           </div>
         </div>
       </div>

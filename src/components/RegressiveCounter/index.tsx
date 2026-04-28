@@ -46,7 +46,10 @@ const RegressiveCounter = ({ handleCallback, display = true, paused = false, cle
 
     if(paused) return null;
 
-    return <div className="bold" style={{ fontSize: "24px" }}>{count}</div>;
+    const urgencyClass =
+      count <= 2 ? "res-regressive-counter--danger" : count <= 5 ? "res-regressive-counter--warning" : "res-regressive-counter--normal";
+
+    return <div className={`bold res-regressive-counter ${urgencyClass}`}>{count}</div>;
 };
 
 export default RegressiveCounter;

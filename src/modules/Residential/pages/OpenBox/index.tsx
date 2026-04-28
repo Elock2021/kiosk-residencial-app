@@ -11,11 +11,11 @@ import OrderService from "../../../../services/order.service";
 import { set_order } from "../../../../redux/actions/order";
 import DoorLockerService from "../../../../services/door_locker.service";
 import BoxComponent from "./Box";
-import modResPng from "../../assets/mod_res.png";
 
 const OpenBox = () => {
   const [boxes, setBoxes] = useState<any>([]);
-  const [isHelpModalOpen, setIsHelpModalOpen] = useState(false);
+  const [selectedBox, setSelectedBox] = useState<any>(null);
+  const [isSelectionModalOpen, setIsSelectionModalOpen] = useState(false);
   const { session, order, loader } = useSelector((state: any) => ({ session: state.session, order: state.order, loader: state.loader }));
 
   const navigate = useNavigate();
@@ -55,17 +55,18 @@ const OpenBox = () => {
         return acc;
       }, {});
 
-      const groupedBoxes: any = Object.keys(grouped).map((key: any) => {
-        const target: any = grouped[key][0];
+      const groupedBoxes: any = [1, 2, 3].map((boxTypeId: number) => {
+        const currentGroup: any[] = grouped[boxTypeId] || [];
+        const target: any = currentGroup[0] || {};
 
         return {
-          id: key,
-          name: target?.box_type?.name,
-          quantity: grouped[key]?.length,
-          width: target?.box_type?.width,
-          height: target?.box_type?.height,
-          depht: target?.box_type?.depht,
-          box_type_id: target?.box_type?.id,
+          id: `${boxTypeId}`,
+          name: target?.box_type?.name || `Casillero ${boxTypeId}`,
+          quantity: currentGroup.length,
+          width: target?.box_type?.width || 0,
+          height: target?.box_type?.height || 0,
+          depht: target?.box_type?.depht || 0,
+          box_type_id: boxTypeId,
           quantity_selected: 1,
         };
       });
@@ -130,98 +131,60 @@ const OpenBox = () => {
     }
   };
 
-  const helpTemplates = [
-    {
-      title: "Caja Chica",
-      color: "#39B364",
-      examples: [
-        "Llaves, documentos o billetera",
-        "Cargador, cables y accesorios pequeños",
-        "Caja de lentes o estuche pequeño",
-      ],
-    },
-    {
-      title: "Caja Mediana",
-      color: "#39B3A1",
-      examples: [
-        "Caja de zapatos",
-        "Bolso o cartera mediana",
-        "Uno o dos paquetes de tamaño medio",
-      ],
-    },
-    {
-      title: "Caja Grande",
-      color: "#3988B3",
-      examples: [
-        "Mochila completa",
-        "Bolsa de supermercado mediana/grande",
-        "Paquete voluminoso que no entra en las anteriores",
-      ],
-    },
-  ];
+  const getBoxLabel = (box: any) => {
+    if (box?.box_type_id === 1) return "pequeño";
+    if (box?.box_type_id === 2) return "mediano";
+    if (box?.box_type_id === 3) return "grande";
+    return String(box?.name || "seleccionado");
+  };
 
-  const _renderHelpButton = () => (
-    <button
-      type="button"
-      onClick={() => setIsHelpModalOpen(true)}
-      className="res-openbox-help-icon-button"
-      aria-label="Abrir ayuda"
-      title="Ayuda"
-    >
-      ?
-    </button>
-  );
+  const _handleRequestBoxSelection = (box: any) => {
+    setSelectedBox(box);
+    setIsSelectionModalOpen(true);
+  };
+
+  const _handleCancelSelection = () => {
+    setIsSelectionModalOpen(false);
+    setSelectedBox(null);
+  };
+
+  const _handleConfirmSelection = async () => {
+    if (!selectedBox) return;
+    const boxToOpen = selectedBox;
+    setIsSelectionModalOpen(false);
+    setSelectedBox(null);
+    await _handleOnclickBox(boxToOpen);
+  };
 
   return (
     <div className="container-fluid h-100 res-page">
       <Header />
 
-      <div className="res-content d-flex align-items-center justify-content-center mt-2">
-        <div className="res-flow res-openbox-flow" style={{ gap: "8px" }}>
-          {_renderHelpButton()}
-          <div className="res-title">Selecciona tamaño</div>
-          <div className="d-flex justify-content-center align-items-center w-100">
-            <div className="w-100">
-              <div className="bold d-flex flex-column">
-                {loader.is_loading ? (
-                  <div className="res-state-message">Cargando cajas...</div>
-                ) : (
-                  <div className="res-openbox-panel">
-                    <div className="res-openbox-image">
-                      <img
-                        src={modResPng}
-                        alt="Modulo residencial"
-                        style={{ width: "48%", maxWidth: "100%", height: "auto" }}
-                      />
-                    </div>
+      <div className="res-content d-flex align-items-start justify-content-center mt-2">
+        <div className="res-flow res-openbox-flow res-size-step">
+          <p className="res-size-step__subtitle">
+            Selecciona el espacio ideal según el tamaño de lo que deseas guardar.
+          </p>
 
-                    {boxes.length > 0 ? (
-                      <div className="res-openbox-list">
-                        {boxes.map((box: any, index: number) => (
-                          <BoxComponent
-                            key={index}
-                            box={box}
-                            _handleOnclickBox={_handleOnclickBox}
-                          />
-                        ))}
-                      </div>
-                    ) : (
-                      <div className="res-openbox-list">
-                        <div className="res-openbox-empty res-state-message">
-                          <span className="d-block">No hay cajas disponibles</span>
-                          <span className="d-block">Por favor deje el paquete en conserjería</span>
-                        </div>
-                      </div>
-                    )}
-                  </div>
-                )}
-              </div>
+          {loader.is_loading ? (
+            <div className="res-state-message">Cargando cajas...</div>
+          ) : boxes.length > 0 ? (
+            <div className="res-size-step__cards">
+              {boxes.map((box: any) => (
+                <BoxComponent key={box.box_type_id} box={box} _handleOnclickBox={_handleRequestBoxSelection} />
+              ))}
             </div>
-          </div>
+          ) : (
+            <div className="res-size-step__empty res-state-message">
+              <span className="d-block">No hay cajas disponibles</span>
+              <span className="d-block">Por favor deje el paquete en conserjería</span>
+            </div>
+          )}
 
-          <div className="w-100 text-center mt-1">
+          <div className="w-100 text-center mt-4">
             <button
-              className="main-button res-secondary"
+              type="button"
+              className="res-help-back-button"
               onClick={() => navigate(`/delivery-with-apartament/${params.apartment}`)}
             >
               Volver
@@ -230,79 +193,23 @@ const OpenBox = () => {
         </div>
       </div>
 
-      {isHelpModalOpen && (
-        <div className="res-modal-overlay" onClick={() => setIsHelpModalOpen(false)}>
-          <div className="res-modal" onClick={(e) => e.stopPropagation()}>
-            <div className="d-flex align-items-center justify-content-between mb-3">
-              <div className="d-flex align-items-center">
-                <span
-                  className="d-flex align-items-center justify-content-center me-2"
-                  style={{
-                    width: "30px",
-                    height: "30px",
-                    borderRadius: "50%",
-                    background: "var(--res-accent)",
-                    color: "var(--res-on-accent)",
-                    fontWeight: 700,
-                  }}
-                >
-                  ?
-                </span>
-                <h4 className="mb-0">¿Qué cabe en cada casillero?</h4>
-              </div>
-              <button
-                type="button"
-                onClick={() => setIsHelpModalOpen(false)}
-                className="res-modal-close"
-                aria-label="Cerrar ayuda"
-              >
-                ×
+      {isSelectionModalOpen && (
+        <div className="res-modal-overlay" onClick={_handleCancelSelection}>
+          <div className="res-modal res-box-selection-modal" onClick={(e) => e.stopPropagation()}>
+            <h4 className="res-box-selection-modal__title">
+              ¿Está seguro que quiere seleccionar el casillero {getBoxLabel(selectedBox)}?
+            </h4>
+            <p className="res-box-selection-modal__text">
+              Si tu paquete no cabe, en la siguiente pantalla toca
+              {" "}
+              <strong>“No me sirve el casillero”</strong>.
+            </p>
+            <div className="res-box-selection-modal__actions">
+              <button type="button" className="res-help-back-button" onClick={_handleCancelSelection}>
+                Cancelar
               </button>
-            </div>
-            <div className="mb-3 p-3 res-modal-note">
-              Sugerencia: si no estás seguro, elige un locker un poco más grande para asegurar que tu
-              paquete entre sin problema.
-            </div>
-
-            {helpTemplates.map((item, index) => {
-              const examplesInTwoBullets: string[] =
-                item.examples.length > 2
-                  ? [item.examples[0], item.examples.slice(1).join(" / ")]
-                  : item.examples;
-
-              return (
-                <div key={index} className="mb-3 p-3 res-modal-item">
-                  <div className="d-flex align-items-center mb-2">
-                    <span
-                      style={{
-                        width: "12px",
-                        height: "12px",
-                        borderRadius: "3px",
-                        background: item.color,
-                        border: "1px solid #000",
-                        display: "inline-block",
-                        marginRight: "8px",
-                      }}
-                    />
-                    <strong>{item.title}</strong>
-                  </div>
-
-                  <ul className="mb-0" style={{ paddingLeft: "18px" }}>
-                    {examplesInTwoBullets.map((example: string, i: number) => (
-                      <li key={i}>{example}</li>
-                    ))}
-                  </ul>
-                </div>
-              );
-            })}
-
-            <div className="d-flex justify-content-center mt-2">
-              <button
-                type="button"
-                className="px-4 main-new-button-yellow"
-                onClick={() => setIsHelpModalOpen(false)}
-              >
-                Entendido
+              <button type="button" className="main-button-yellow" onClick={_handleConfirmSelection}>
+                Sí, seleccionar
               </button>
             </div>
           </div>
