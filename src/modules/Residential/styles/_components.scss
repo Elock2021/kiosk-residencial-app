@@ -4606,10 +4606,15 @@ button:focus-visible {
   width: min(760px, 100%);
   max-height: 430px;
   overflow: auto;
-  display: flex;
-  flex-direction: column;
+  display: grid;
+  grid-template-columns: 1fr;
   gap: 8px;
   padding-right: 4px;
+  align-content: start;
+}
+
+.res-resident-list.res-resident-list--two-cols {
+  grid-template-columns: repeat(2, minmax(0, 1fr));
 }
 
 .res-resident-list--spaced {
