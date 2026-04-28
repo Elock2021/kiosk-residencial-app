@@ -75,8 +75,8 @@ const CustodyKeyboard = () => {
       <div className="w-100 my-4 ps-4 text-start">
         <Logo style={{ width: "100px" }} />
       </div>
-      <div className="d-flex justify-content-center align-items-center p-0">
-        <div className="d-flex align-items-center justify-content-around flex-column p-5">
+      <div className="d-flex justify-content-center align-items-center p-0 res-custody-stage">
+        <div className="d-flex align-items-center justify-content-around flex-column p-5 res-custody-content">
           <div className="w-100 text-center bold size-14 res-custody-title">
             Ingresa el número de teléfono de la persona que va a retirar
           </div>
@@ -87,45 +87,27 @@ const CustodyKeyboard = () => {
             >
               {"(+56)".split("").map((item: any, index: any) => (
                 <div
-                  className="bold px-2 py-0 my-0 res-custody-readout__prefix"
+                  className="bold px-0 mx-0 py-0 my-0 res-custody-readout__prefix"
                   key={index}
                 >
                   {item}
                 </div>
               ))}
-              {state.data?.split("").map((item: any, index: any) => {
-                if (index === 4) {
-                  return (
-                    <>
-                      <div
-                        className="bold px-2 mx-2 py-0 my-0 res-custody-readout__digit"
-                        key={index}
-                      >
-                        {item}
-                      </div>
-                      <div
-                        className="bold px-2 mx-2 py-0 my-0 res-custody-readout__digit"
-                        key={"-"}
-                      >
-                        -
-                      </div>
-                    </>
-                  );
-                }
-
+              {Array.from({ length: 9 }).map((_, index) => {
+                const value = state.data?.[index] || "x";
                 return (
                   <div
-                    className="bold px-2 mx-2 py-0 my-0 res-custody-readout__digit"
+                    className={`bold px-1 mx-0 py-0 my-0 res-custody-readout__digit ${value === "x" ? "res-custody-readout__digit--placeholder" : ""}`}
                     key={index}
                   >
-                    {item}
+                    {value}
                   </div>
                 );
               })}
             </div>
           </div>
 
-          <div className="w-100 keyboard-number res-custody-keyboard">
+          <div className="w-100 keyboard-number res-keypad-shell res-custody-keyboard">
             <Keyboard
               onKeyPress={_handleOnKeyPress}
               onChange={_handleOnChange}
