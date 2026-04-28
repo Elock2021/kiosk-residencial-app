@@ -21,6 +21,8 @@ const getResidentDisplayName = (name: string) => {
   return cleanName || name;
 };
 
+const MAX_RESIDENTS_FOR_TEST = 5;
+
 const Apartaments = () => {
   const [state, setState] = useState<any>({
     users: [],
@@ -126,7 +128,7 @@ const Apartaments = () => {
     navigate(`/open-box-delivery/${params.apartment}`);
   };
 
-  const visibleUsers = state.users.slice(-5);
+  const visibleUsers = state.users.slice(0, MAX_RESIDENTS_FOR_TEST);
   const residentListLayoutClass =
     visibleUsers.length >= 6 ? "res-resident-list--two-cols" : "res-resident-list--one-col";
 

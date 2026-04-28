@@ -6,6 +6,7 @@ import { useNavigate } from "react-router-dom";
 import DeliveryUserService from "../../../../services/delivery_user.service";
 import OrderService from "../../../../services/order.service";
 import { LuQrCode } from "react-icons/lu";
+import { LuMailCheck } from "react-icons/lu";
 import { TbUserEdit } from "react-icons/tb";
 import { TbBrandWhatsapp } from "react-icons/tb";
 import { TbUserSearch } from "react-icons/tb";
@@ -27,7 +28,9 @@ type AlertModalState = {
 };
 
 const NO_PACKAGES_TEXT =
-  "Usted no tiene paquetes en el locker. Comuníquese con conserjería si desea revisar los casilleros.";
+  "Usted no tiene paquetes en el locker. Si cree que esto es un error, por favor contacte al soporte técnico.";
+const MAX_RESIDENTS_FOR_TEST = 5;
+const TWO_COLUMNS_THRESHOLD = 6;
 
 const ReadDocument = () => {
   const { session } = useSelector((state: any) => ({ session: state.session }));
@@ -155,6 +158,12 @@ const ReadDocument = () => {
     }
   };
 
+  const visibleResidents = residents.slice(0, MAX_RESIDENTS_FOR_TEST);
+  const residentListLayoutClass =
+    visibleResidents.length >= TWO_COLUMNS_THRESHOLD
+      ? "res-help-resident-list--two-cols"
+      : "res-help-resident-list--one-col";
+
   return (
     <div className="container-fluid h-100 res-page">
       <Header hideThemeToggle={step !== "menu"} />
@@ -255,13 +264,10 @@ const ReadDocument = () => {
           {step === "resident" && (
             <div className="res-help-form res-help-form--resident">
               <h2 className="res-help-form__title">Selecciona un residente</h2>
-
               <div
-                className={`res-help-resident-list ${
-                  residents.length > 6 ? "res-help-resident-list--two-cols" : "res-help-resident-list--one-col"
-                }`}
+                className={`res-help-resident-list ${residentListLayoutClass}`}
               >
-                {residents.slice(0, 5).map((resident: any, index: number) => (
+                {visibleResidents.map((resident: any, index: number) => (
                   <button
                     key={`${resident?.id || resident?.name}-${index}`}
                     type="button"
@@ -386,7 +392,7 @@ const ReadDocument = () => {
             role="presentation"
           >
             <div
-              className="res-help-modal"
+              className="res-help-modal res-help-modal--result"
               role="dialog"
               aria-modal="true"
               aria-label={resultModal.title}
@@ -404,7 +410,12 @@ const ReadDocument = () => {
                 ×
               </button>
 
-              <h3>{resultModal.title}</h3>
+              <h3 className="res-help-modal__title">
+                <span className="res-help-modal__title-icon" aria-hidden="true">
+                  <LuMailCheck />
+                </span>
+                <span>{resultModal.title}</span>
+              </h3>
               <p>{resultModal.message}</p>
               {resultModal.email && (
                 <p>
