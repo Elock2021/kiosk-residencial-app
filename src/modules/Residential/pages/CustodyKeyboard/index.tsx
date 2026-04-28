@@ -71,43 +71,23 @@ const CustodyKeyboard = () => {
   };
 
   return (
-    <div className="container-fluid h-100">
-      <div className="w-100 text-center my-4">
+    <div className="container-fluid h-100 res-page">
+      <div className="w-100 my-4 ps-4 text-start">
         <Logo style={{ width: "100px" }} />
       </div>
       <div className="d-flex justify-content-center align-items-center p-0">
-        <div
-          className=" d-flex align-items-center justify-content-around flex-column p-5"
-          style={{
-            background: "rgba(255, 255, 255, 0.1)",
-            width: "90%",
-            borderRadius: "30px",
-            height: "650px",
-          }}
-        >
-          <div className="w-100 text-center bold size-14">
+        <div className="d-flex align-items-center justify-content-around flex-column p-5">
+          <div className="w-100 text-center bold size-14 res-custody-title">
             Ingresa el número de teléfono de la persona que va a retirar
           </div>
 
           <div>
             <div
-              className="w-100 d-flex justify-content-center align-items-end my-4 pb-2"
-              style={{
-                color: "#000",
-                background: "rgba(255, 255, 255, 0.1)",
-                borderRadius: "10px",
-                minWidth: "300px",
-                minHeight: "80px",
-              }}
+              className="w-100 d-flex justify-content-center align-items-end my-4 pb-2 res-custody-readout"
             >
               {"(+56)".split("").map((item: any, index: any) => (
                 <div
-                  className="bold px-2 py-0 my-0"
-                  style={{
-                    fontSize: "38px",
-                    borderBottom: "0px solid #FF0",
-                    color: "#FFF",
-                  }}
+                  className="bold px-2 py-0 my-0 res-custody-readout__prefix"
                   key={index}
                 >
                   {item}
@@ -118,23 +98,13 @@ const CustodyKeyboard = () => {
                   return (
                     <>
                       <div
-                        className="bold px-2 mx-2 py-0 my-0"
-                        style={{
-                          fontSize: "38px",
-                          borderBottom: "4px solid #FFF",
-                          color: "#FFF",
-                        }}
+                        className="bold px-2 mx-2 py-0 my-0 res-custody-readout__digit"
                         key={index}
                       >
                         {item}
                       </div>
                       <div
-                        className="bold px-2 mx-2 py-0 my-0"
-                        style={{
-                          fontSize: "38px",
-                          borderBottom: "4px solid #FFF",
-                          color: "#FFF",
-                        }}
+                        className="bold px-2 mx-2 py-0 my-0 res-custody-readout__digit"
                         key={"-"}
                       >
                         -
@@ -145,12 +115,7 @@ const CustodyKeyboard = () => {
 
                 return (
                   <div
-                    className="bold px-2 mx-2 py-0 my-0"
-                    style={{
-                      fontSize: "38px",
-                      borderBottom: "4px solid #FFF",
-                      color: "#FFF",
-                    }}
+                    className="bold px-2 mx-2 py-0 my-0 res-custody-readout__digit"
                     key={index}
                   >
                     {item}
@@ -160,10 +125,7 @@ const CustodyKeyboard = () => {
             </div>
           </div>
 
-          <div
-            className="w-100 keyboard-number"
-            style={{ color: "#000", height: "65vh" }}
-          >
+          <div className="w-100 keyboard-number res-custody-keyboard">
             <Keyboard
               onKeyPress={_handleOnKeyPress}
               onChange={_handleOnChange}
@@ -173,10 +135,7 @@ const CustodyKeyboard = () => {
           </div>
 
           <div className="text-center my-3">
-            <button
-              className="main-button px-5 py-2 ms-3 bold"
-              onClick={() => navigate("/")}
-            >
+            <button className="res-keypad-back-button px-5 py-2 ms-3 bold" onClick={() => navigate("/")}>
               Volver
             </button>
           </div>

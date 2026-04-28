@@ -19,8 +19,11 @@ type ApartmentKeyboardWithRedirectProps = {
 
 const VALID_APARTMENT_REGEX = /^\d{1,4}[A-Z]?$/;
 const NUMBER_KEYS = ["1", "2", "3", "4", "5", "6", "7", "8", "9"];
-const LETTER_KEYS_PAGE_ONE = ["A", "B", "C", "D", "E", "F", "G", "H", "I", "J", "K", "{more}"];
-const LETTER_KEYS_PAGE_TWO = ["L", "M", "N", "O", "P", "Q", "R", "S", "T", "U", "V", "W", "X", "Y", "Z", "{back}"];
+const LETTER_ROWS = [
+  ["Q", "W", "E", "R", "T", "Y", "U", "I", "O", "P"],
+  ["A", "S", "D", "F", "G", "H", "J", "K", "L", "Ñ"],
+  ["Z", "X", "C", "V", "B", "N", "M"],
+];
 
 const ApartmentKeyboardWithRedirect = ({
   embedded = false,
@@ -35,7 +38,6 @@ const ApartmentKeyboardWithRedirect = ({
 }: ApartmentKeyboardWithRedirectProps) => {
   const [data, setData] = useState<string>(String(initialValue || "").toUpperCase());
   const [mode, setMode] = useState<"numbers" | "letters">("numbers");
-  const [lettersPage, setLettersPage] = useState<1 | 2>(1);
 
   const [redirectUrl, setRedirectUrl] = useState<string | null>(null);
   const navigate = useNavigate();
@@ -108,8 +110,7 @@ const ApartmentKeyboardWithRedirect = ({
     });
   };
 
-  const activeKeys =
-    mode === "numbers" ? NUMBER_KEYS : lettersPage === 1 ? LETTER_KEYS_PAGE_ONE : LETTER_KEYS_PAGE_TWO;
+  const activeKeys = mode === "numbers" ? NUMBER_KEYS : [];
 
   const content = (
     <div className="res-kiosk-input-screen res-kiosk-input-screen--apartment">
@@ -138,37 +139,64 @@ const ApartmentKeyboardWithRedirect = ({
           <button
             type="button"
             className={`res-botonera-mode__btn ${mode === "letters" ? "is-active" : ""}`}
-            onClick={() => {
-              setMode("letters");
-              setLettersPage(1);
-            }}
+            onClick={() => setMode("letters")}
           >
             ABC
           </button>
         </div>
 
-        <div className={`res-botonera-grid res-botonera-grid--${mode}`}>
-          {activeKeys.map((key) => (
-            <button
-              key={`${mode}-${key}`}
-              type="button"
-              className={`res-botonera-key ${key === "{more}" || key === "{back}" ? "res-botonera-key--pager" : ""}`}
-              onClick={() => {
-                if (key === "{more}") {
-                  setLettersPage(2);
-                  return;
-                }
-                if (key === "{back}") {
-                  setLettersPage(1);
-                  return;
-                }
-                _insertCharacter(key);
-              }}
-            >
-              {key === "{more}" ? "Más +" : key === "{back}" ? "Volver" : key}
-            </button>
-          ))}
-        </div>
+        {mode === "numbers" ? (
+          <div className={`res-botonera-grid res-botonera-grid--${mode}`}>
+            {activeKeys.map((key) => (
+              <button
+                key={`${mode}-${key}`}
+                type="button"
+                className="res-botonera-key"
+                onClick={() => _insertCharacter(key)}
+              >
+                {key}
+              </button>
+            ))}
+          </div>
+        ) : (
+          <div className="res-botonera-letters-rows">
+            {LETTER_ROWS.map((row, rowIndex) => (
+              <div className="res-botonera-letters-row" key={`letters-row-${rowIndex}`}>
+                {rowIndex === 2 && (
+                  <>
+                    <button
+                      type="button"
+                      className="res-botonera-key res-botonera-key--dark res-botonera-key--letters-action res-botonera-key--letters-delete"
+                      onClick={_deleteLastCharacter}
+                    >
+                      Borrar
+                    </button>
+                  </>
+                )}
+                {row.map((key) => (
+                  <button
+                    key={`${mode}-${key}`}
+                    type="button"
+                    className="res-botonera-key"
+                    onClick={() => _insertCharacter(key)}
+                  >
+                    {key}
+                  </button>
+                ))}
+                {rowIndex === 2 && (
+                  <button
+                    type="button"
+                    className="res-botonera-key res-botonera-key--accent res-botonera-key--letters-action"
+                    onClick={() => void _handleContinue()}
+                    disabled={loading || !isValid}
+                  >
+                    {loading ? "..." : "OK"}
+                  </button>
+                )}
+              </div>
+            ))}
+          </div>
+        )}
 
         {mode === "numbers" ? (
           <div className="res-botonera-actions">
@@ -187,24 +215,7 @@ const ApartmentKeyboardWithRedirect = ({
               {loading ? "..." : "OK"}
             </button>
           </div>
-        ) : (
-          <div className="res-botonera-actions">
-            <button type="button" className="res-botonera-key res-botonera-key--dark" onClick={_deleteLastCharacter}>
-              Borrar
-            </button>
-            <button type="button" className="res-botonera-key res-botonera-key--ghost" onClick={_clearValue}>
-              Limpiar
-            </button>
-            <button
-              type="button"
-              className="res-botonera-key res-botonera-key--accent"
-              onClick={() => void _handleContinue()}
-              disabled={loading || !isValid}
-            >
-              {loading ? "..." : "OK"}
-            </button>
-          </div>
-        )}
+        ) : null}
       </div>
 
       <div className="text-center my-2">
