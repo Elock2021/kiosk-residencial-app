@@ -20,7 +20,7 @@ const App = () => {
 
   return (
     <Provider store={store}>
-      <ToastContainer />
+      <ToastContainer position="bottom-center" />
       <RouterWrapper />
     </Provider>
   );

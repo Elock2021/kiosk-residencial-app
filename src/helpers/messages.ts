@@ -5,8 +5,14 @@ export const _pushToastMessage = (data: {
   type: string;
   header: string;
   text: string;
-  placement?: "topStart" | "topEnd" | "bottomStart" | "bottomEnd";
+  placement?:
+    | "topStart"
+    | "topCenter"
+    | "topEnd"
+    | "bottomStart"
+    | "bottomCenter"
+    | "bottomEnd";
 }) => {
   const message: any = ToastMessage(data);
-  toaster.push(message, { placement: data.placement || "topEnd" });
+  toaster.push(message, { placement: data.placement || "bottomCenter" });
 };

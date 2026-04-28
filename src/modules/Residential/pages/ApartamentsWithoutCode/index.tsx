@@ -22,6 +22,8 @@ const getResidentDisplayName = (name: string) => {
   return cleanName || name;
 };
 
+const MAX_RESIDENTS_FOR_TEST = 5;
+
 const ApartamentsWithoutCode = () => {
   const [state, setState] = useState<any>({
     users: [],
@@ -127,6 +129,10 @@ const ApartamentsWithoutCode = () => {
     navigate(`/pickup-without-code/packages`);
   };
 
+  const visibleUsers = state.users.slice(0, MAX_RESIDENTS_FOR_TEST);
+  const residentListLayoutClass =
+    visibleUsers.length >= 6 ? "res-resident-list--two-cols" : "res-resident-list--one-col";
+
   const UserInfoCard = ({ user }: any) => {
     return (
       <button className="res-resident-item uppercase bold" onClick={() => _handleSelectUser(user)}>
@@ -167,8 +173,8 @@ const ApartamentsWithoutCode = () => {
           )}
 
           {state.users?.length > 0 && (
-            <div className="res-resident-list res-resident-list--spaced apartment">
-              {state.users.map((user: any, index: number) => (
+            <div className={`res-resident-list res-resident-list--spaced apartment ${residentListLayoutClass}`}>
+              {visibleUsers.map((user: any, index: number) => (
                 <UserInfoCard user={user} key={index} />
               ))}
             </div>

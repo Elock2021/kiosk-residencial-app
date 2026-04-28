@@ -2,13 +2,16 @@ import { Notification } from "rsuite";
 
 const ToastMessage = (props: any) => {
   const { type, header, text } = props;
+  const validTypes = ["success", "info", "warning", "error"];
+  const safeType = validTypes.includes(type) ? type : "info";
+
   const message = (
     <Notification
-      type={type}
-      header={header}
+      type={safeType}
+      header={header || "Notificación"}
       duration={10000}
       closable
-      style={{ color: "#000" }}
+      className={`kiosk-toast kiosk-toast--${safeType}`}
     >
       {text}
     </Notification>

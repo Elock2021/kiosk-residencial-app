@@ -3,7 +3,18 @@ import { TiWarning } from "react-icons/ti";
 import { TiDelete } from "react-icons/ti";
 
 const ConfirmationModal = (props: any) => {
-  const { open, type, headerText, contentText, onConfirm, onCancel } = props;
+  const {
+    open,
+    type,
+    headerText,
+    contentText,
+    onConfirm,
+    onCancel,
+    variant,
+    confirmText,
+    cancelText,
+  } = props;
+  const isKiosk = variant === "kiosk";
 
   const Warning = () => <TiWarning className="res-confirm-icon res-confirm-icon--warning" />;
   const Danger = () => <TiDelete className="res-confirm-icon res-confirm-icon--danger" />;
@@ -15,6 +26,34 @@ const ConfirmationModal = (props: any) => {
     danger: <Danger />,
     warning: <Warning />,
   };
+
+  if (isKiosk) {
+    return (
+      <div
+        className={`${open ? "d-flex" : "d-none"} justify-content-center align-items-center res-confirm-overlay res-confirm-overlay--kiosk`}
+      >
+        <div className="res-confirm-card res-confirm-card--kiosk">
+          <div className="res-confirm-card__header">
+            <div className="res-confirm-card__title-wrap">
+              {Types[type]}
+              <div className="res-confirm-card__title">{headerText || "Confirmación"}</div>
+            </div>
+          </div>
+          <div className="res-confirm-card__content">
+            {contentText || "¿Está seguro de que desea realizar esta acción?"}
+          </div>
+          <div className="res-confirm-card__actions">
+            <button className="res-confirm-card__btn res-confirm-card__btn--ghost" onClick={onCancel}>
+              {cancelText || "Cancelar"}
+            </button>
+            <button className="res-confirm-card__btn res-confirm-card__btn--primary" onClick={onConfirm}>
+              {confirmText || "Confirmar"}
+            </button>
+          </div>
+        </div>
+      </div>
+    );
+  }
 
   return (
     <div
