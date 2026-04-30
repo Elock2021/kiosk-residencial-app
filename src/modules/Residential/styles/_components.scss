@@ -6172,6 +6172,73 @@ button:focus-visible {
   color: color-mix(in srgb, var(--res-text) 70%, var(--res-muted));
 }
 
+[data-theme="dark"] .res-custody-confirm__hero-icon {
+  background: rgba(20, 36, 57, 0.86);
+  color: #39c8a4;
+  box-shadow: 0 12px 24px rgba(0, 0, 0, 0.38);
+}
+
+[data-theme="dark"] .res-custody-confirm__title {
+  color: #e9f1ff;
+}
+
+[data-theme="dark"] .res-custody-confirm__subtitle {
+  color: #b9c8de;
+}
+
+[data-theme="dark"] .res-custody-confirm__card,
+[data-theme="dark"] .res-custody-confirm__footer-card {
+  background: linear-gradient(180deg, rgba(14, 31, 52, 0.88), rgba(10, 24, 43, 0.9));
+  border-color: rgba(114, 150, 190, 0.26);
+  box-shadow: 0 14px 24px rgba(0, 0, 0, 0.28);
+}
+
+[data-theme="dark"] .res-custody-confirm__divider,
+[data-theme="dark"] .res-custody-confirm__footer-divider {
+  background: rgba(153, 180, 210, 0.24);
+}
+
+[data-theme="dark"] .res-custody-confirm__card-copy h2 {
+  color: #e8f1ff;
+}
+
+[data-theme="dark"] .res-custody-confirm__card-copy p,
+[data-theme="dark"] .res-custody-confirm__footer-item p {
+  color: #c7d6ea;
+}
+
+[data-theme="dark"] .res-custody-confirm__footer-icon {
+  background: rgba(69, 205, 174, 0.18);
+  color: #53d7b6;
+}
+
+[data-theme="dark"] .res-custody-confirm__warning {
+  background: linear-gradient(180deg, rgba(67, 58, 24, 0.92), rgba(58, 51, 22, 0.92));
+  border-color: #f1c82a;
+  box-shadow: 0 10px 20px rgba(0, 0, 0, 0.3), 0 0 0 1px rgba(241, 200, 42, 0.22) inset;
+}
+
+[data-theme="dark"] .res-custody-confirm__warning-icon {
+  background: rgba(255, 226, 120, 0.28);
+  color: #ffcf42;
+}
+
+[data-theme="dark"] .res-custody-confirm__warning-copy strong {
+  color: #fff4c9;
+}
+
+[data-theme="dark"] .res-custody-confirm__card-back {
+  background: rgba(255, 77, 60, 0.12);
+  border-color: rgba(255, 120, 107, 0.75);
+  color: #ffb1a8;
+}
+
+[data-theme="dark"] .res-custody-confirm__card-back:hover {
+  background: rgba(255, 77, 60, 0.18);
+  border-color: rgba(255, 140, 128, 0.95);
+  color: #ffd1ca;
+}
+
 @media (max-width: 1024px) and (max-height: 820px) {
   .res-custody-confirm {
     min-height: 540px;
@@ -7063,6 +7130,43 @@ button:focus-visible {
 .res-pickup-open-guided__note svg {
   width: 18px;
   height: 18px;
+}
+
+[data-theme="dark"] .res-pickup-open-guided__hero-icon {
+  background: rgba(20, 36, 57, 0.9);
+  color: #39c8a4;
+  box-shadow: 0 12px 24px rgba(0, 0, 0, 0.38);
+}
+
+[data-theme="dark"] .res-pickup-open-guided__title {
+  color: #e9f1ff;
+}
+
+[data-theme="dark"] .res-pickup-open-guided__subtitle {
+  color: #c1d0e6;
+}
+
+[data-theme="dark"] .res-pickup-open-guided__door-card {
+  background: linear-gradient(180deg, rgba(14, 31, 52, 0.9), rgba(10, 24, 43, 0.92));
+  border-color: rgba(118, 154, 194, 0.3);
+  box-shadow: 0 10px 20px rgba(0, 0, 0, 0.28);
+}
+
+[data-theme="dark"] .res-pickup-open-guided__door-card span,
+[data-theme="dark"] .res-pickup-open-guided__door-card strong {
+  color: #eaf2ff;
+}
+
+[data-theme="dark"] .res-pickup-open-guided__door-card i {
+  background: rgba(153, 180, 210, 0.28);
+}
+
+[data-theme="dark"] .res-pickup-open-guided__note {
+  color: #d6e2f4;
+}
+
+[data-theme="dark"] .res-pickup-open-guided__note svg {
+  color: #a9bdd8;
 }
 
 @keyframes res-pickup-check-float {
