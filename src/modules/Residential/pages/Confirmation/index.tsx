@@ -1,5 +1,4 @@
-import { useRef, useState } from "react";
-import RegressiveCounter from "../../../../components/RegressiveCounter";
+import { useRef } from "react";
 import Header from "../../components/Header";
 import { useSelector } from "react-redux";
 import { useDispatch } from "react-redux";
@@ -11,7 +10,6 @@ import { sleep } from "../../../../helpers/functions";
 // import BoxImage from "../../../../assets/svg/box_black.svg?react";
 
 const Confirmation = () => {
-  const [intervalStateControl, setIntervalStateControl] = useState(0);
   const { order } = useSelector((state: any) => ({ order: state.order }));
   const dispatch: any = useDispatch();
   const navigate = useNavigate();
@@ -20,18 +18,12 @@ const Confirmation = () => {
 
   const Order = new OrderService();
 
-  const _stopCounter = () => {
-    setIntervalStateControl((prev) => prev + 1);
-  };
-
   const _handleConfirmOrder = async () => {
     if (isProcessing.current) return;
     isProcessing.current = true;
 
     try {
       dispatch(set_loader({ is_loading: true }));
-
-      _stopCounter();
 
       sleep(1);
 
@@ -55,7 +47,6 @@ const Confirmation = () => {
       : "/open-box-delivery";
 
     try {
-      _stopCounter();
       dispatch(set_loader({ is_loading: true }));
 
       if (order.order?.id) {
@@ -98,15 +89,6 @@ const Confirmation = () => {
                 Finalizar
               </button>
 
-              <div className="res-confirm-guided__countdown" aria-live="polite">
-                <span className="res-confirm-guided__countdown-label">Finaliza automáticamente en</span>
-                <span className="res-confirm-guided__timer-badge" aria-label="Tiempo restante para finalizar automáticamente">
-                <RegressiveCounter
-                  clearIntervalAction={intervalStateControl}
-                  handleCallback={_handleConfirmOrder}
-                />
-                </span>
-              </div>
             </div>
           </div>
         </div>

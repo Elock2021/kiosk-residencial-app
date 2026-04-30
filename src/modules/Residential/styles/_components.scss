@@ -5698,25 +5698,26 @@ button:focus-visible {
 
 .res-confirm-guided {
   width: min(920px, 96vw);
-  min-height: 620px;
+  min-height: 560px;
   display: flex;
   align-items: center;
   justify-content: center;
-  margin-top: -24px;
+  margin-top: -8px;
 }
 
 .res-confirm-guided__panel {
   width: min(760px, 100%);
-  min-height: 560px;
+  min-height: 500px;
   border-radius: 0;
   border: none;
   background: transparent;
   box-shadow: none;
-  padding: 32px 30px 34px;
+  padding: 24px 30px 28px;
   text-align: center;
   display: flex;
   flex-direction: column;
-  justify-content: space-between;
+  justify-content: center;
+  gap: 14px;
 }
 
 .res-confirm-guided__eyebrow {
@@ -5746,9 +5747,9 @@ button:focus-visible {
 }
 
 .res-confirm-guided__actions {
-  margin-top: 36px;
+  margin-top: 24px;
   display: grid;
-  gap: 18px;
+  gap: 14px;
   justify-items: center;
 }
 
