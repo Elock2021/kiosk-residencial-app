@@ -127,7 +127,7 @@ const CustodyKeyboard = () => {
           </div>
 
           <div className="text-center my-3">
-            <button className="res-keypad-back-button px-5 py-2 ms-3 bold" onClick={() => navigate("/")}>
+            <button className="res-keypad-back-button" onClick={() => navigate("/")}>
               Volver
             </button>
           </div>

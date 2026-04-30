@@ -129,7 +129,10 @@ const Pickup = () => {
         onChange={_handleChangeInput}
         maxLength={6}
       />
-      <div className="w-100 my-4 px-4 d-flex align-items-center justify-content-between">
+      <div
+        className="w-100 my-4 px-4 d-flex align-items-center justify-content-between"
+        style={{ position: "relative", zIndex: 10 }}
+      >
         <Logo style={{ width: "100px" }} />
         <button
           type="button"

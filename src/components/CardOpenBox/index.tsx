@@ -10,6 +10,7 @@ import { useEffect } from "react";
 import { set_timer } from "../../redux/actions/timer";
 import Circle from "../../assets/svg/circle.svg?react";
 import User from "../../assets/svg/user.svg?react";
+import { set_loader } from "../../redux/actions/loader";
 
 const CardOpenBox = (props: any) => {
   const { box_type, door_number, data, action, boxQuantity } = props;
@@ -43,6 +44,7 @@ const CardOpenBox = (props: any) => {
 
   const _handleOpenBox = async () => {
     dispatch(set_timer({ seconds: process.env.REACT_APP_TIMER_SECONDS || 20 }));
+    dispatch(set_loader({ is_loading: true }));
     try {
       switch (action) {
         case "pickup":
@@ -56,6 +58,8 @@ const CardOpenBox = (props: any) => {
       }
     } catch (e: any) {
       _handleError(e, e.message);
+    } finally {
+      dispatch(set_loader({ is_loading: false }));
     }
   };
 

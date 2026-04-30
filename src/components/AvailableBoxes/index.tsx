@@ -2,15 +2,18 @@
 
 import { useEffect, useState } from "react";
 import { useSelector } from "react-redux";
+import { useDispatch } from "react-redux";
 import { _pushToastMessage } from "../../helpers/messages";
 import BoxService from "../../services/box.service";
 import Card from "../Card";
 import loaderGif from "../../assets/gifs/loader-transparent.gif";
+import { set_loader } from "../../redux/actions/loader";
 
 const AvailableBoxes = () => {
   const [boxes, setBoxes] = useState<any>([]);
   const [loading, setLoading] = useState(false);
   const { session } = useSelector((state: any) => ({ session: state.session }));
+  const dispatch: any = useDispatch();
   const Box = new BoxService();
 
   useEffect(() => {
@@ -20,6 +23,7 @@ const AvailableBoxes = () => {
   const _getAvailableBoxes = async () => {
     try {
       setLoading(true);
+      dispatch(set_loader({ is_loading: true }));
       const response: any = await Box.available_boxes(session?.profile?.id);
       const { data } = response;
 
@@ -53,6 +57,9 @@ const AvailableBoxes = () => {
         text: "No fue posible cargar las cajas disponibles",
         header: "Aviso",
       });
+    } finally {
+      dispatch(set_loader({ is_loading: false }));
+      setLoading(false);
     }
   };
 

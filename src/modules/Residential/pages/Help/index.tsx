@@ -2,6 +2,7 @@
 import Header from "../../components/Header";
 import { useMemo, useState } from "react";
 import { useSelector } from "react-redux";
+import { useDispatch } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import DeliveryUserService from "../../../../services/delivery_user.service";
 import OrderService from "../../../../services/order.service";
@@ -12,6 +13,7 @@ import { TbBrandWhatsapp } from "react-icons/tb";
 import { TbUserSearch } from "react-icons/tb";
 import { FiInfo } from "react-icons/fi";
 import ApartmentKeyboardWithRedirect from "../ApartamentKeyboardWithRedirect";
+import { set_loader } from "../../../../redux/actions/loader";
 
 type HelpStep = "menu" | "apartment" | "resident";
 type HelpFlow = "pickup" | "edit" | null;
@@ -34,6 +36,7 @@ const TWO_COLUMNS_THRESHOLD = 6;
 
 const ReadDocument = () => {
   const { session } = useSelector((state: any) => ({ session: state.session }));
+  const dispatch: any = useDispatch();
   const navigate = useNavigate();
   const [step, setStep] = useState<HelpStep>("menu");
   const [activeFlow, setActiveFlow] = useState<HelpFlow>(null);
@@ -95,6 +98,7 @@ const ReadDocument = () => {
     }
 
     setLoading(true);
+    dispatch(set_loader({ is_loading: true }));
     try {
       setApartmentValue(apartment.trim());
       const users = await fetchResidentsByApartment(apartment);
@@ -107,12 +111,14 @@ const ReadDocument = () => {
     } catch (error) {
       openAlertModal("Error", "No fue posible validar la información en este momento.");
     } finally {
+      dispatch(set_loader({ is_loading: false }));
       setLoading(false);
     }
   };
 
   const handleResidentSelect = async (resident: any) => {
     setLoading(true);
+    dispatch(set_loader({ is_loading: true }));
     try {
       if (activeFlow === "pickup") {
         const reservations = await new OrderService().getReservationsByUser({
@@ -154,6 +160,7 @@ const ReadDocument = () => {
     } catch (error) {
       openAlertModal("Error", "No fue posible validar la información en este momento.");
     } finally {
+      dispatch(set_loader({ is_loading: false }));
       setLoading(false);
     }
   };
@@ -254,6 +261,7 @@ const ReadDocument = () => {
               placeholder="Ej: 203, 12A"
               continueLabel="Continuar"
               backLabel="Volver"
+              backButtonClassName="res-help-back-button"
               initialValue={apartmentValue}
               loading={loading}
               onContinue={handleApartmentContinue}
@@ -263,6 +271,9 @@ const ReadDocument = () => {
 
           {step === "resident" && (
             <div className="res-help-form res-help-form--resident">
+              <p className="res-help-module__eyebrow res-help-module__eyebrow--resident">
+                Depto {apartmentValue}
+              </p>
               <h2 className="res-help-form__title">Selecciona un residente</h2>
               <div
                 className={`res-help-resident-list ${residentListLayoutClass}`}
